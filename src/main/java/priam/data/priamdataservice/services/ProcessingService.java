@@ -1,21 +1,16 @@
 package priam.data.priamdataservice.services;
 
 import org.springframework.stereotype.Service;
-import priam.data.priamdataservice.dto.ProcessingRequestDTO;
-import priam.data.priamdataservice.dto.ProcessingResponseDTO;
-import priam.data.priamdataservice.entities.Data;
+import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.entities.Processing;
 import priam.data.priamdataservice.mappers.ProcessingMapper;
-import priam.data.priamdataservice.openfeign.DataRestClient;
+import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
 import priam.data.priamdataservice.repositories.ProcessingRepository;
 
 import javax.annotation.Generated;
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Generated(
         value = "org.mapstruct.ap.MappingProcessor",
@@ -28,16 +23,16 @@ public class ProcessingService implements ProcessingServiceInterface  {
 
     private ProcessingMapper processingMapper;
     private DataUsageService dataUsageService;
+    private DataServiceImpl dataService;
     private ProcessingRepository processingRepository;
+    private DataSubjectRestClient dataSubjectRestClient;
 
-    private DataRestClient dataRestClient;
-
-    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataRestClient dataRestClient,
-                             DataUsageService dataUsageService) {
+    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataUsageService dataUsageService, DataServiceImpl dataService, DataSubjectRestClient dataSubjectRestClient) {
         this.processingMapper = processingMapper;
         this.processingRepository = processingRepository;
-        this.dataRestClient = dataRestClient;
         this.dataUsageService = dataUsageService;
+        this.dataService = dataService;
+        this.dataSubjectRestClient = dataSubjectRestClient;
     }
     @Override
     public Processing createProcessing(ProcessingRequestDTO processingRequestDTO) {
@@ -87,30 +82,58 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId){
+    public Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId) {
         Collection<Processing> processings = getProcessings();
         List<Integer> personalDataId = new LinkedList<>();
         Collection<ProcessingResponseDTO> processingsDsc = new LinkedList<>();
 
-        for (Data data: dataRestClient.getPersonalDataByDSCategory(dscId)){
+        for (DataResponseDTO data: dataService.findAllDataByDataSubjectCategory(dscId)) {
             personalDataId.add(data.getId());
         }
 
-        for (Processing processing: processings){
+        for (Processing processing: processings) {
             int cpt = 0;
-            for (DataUsage dataUsage: processing.getDataUsages()){
+            for (DataUsage dataUsage: processing.getDataUsages()) {
                 System.out.println("donnée personnelles "+ personalDataId );
                 System.out.println("donnée personnelles du processing "+ dataUsage.getDataId() );
-                   if (personalDataId.contains(dataUsage.getDataId()))
-                   {
-                       cpt ++;
-                       break;
-                   }
+                if (personalDataId.contains(dataUsage.getDataId())) {
+                    cpt ++;
+                    break;
+                }
             }
 
-            if(cpt != 0) processingsDsc.add(processingMapper.fromProcessing(processing));
+            if(cpt != 0)
+                processingsDsc.add(processingMapper.fromProcessing(processing));
         }
 
         return processingsDsc;
     }
+    @Override
+    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataListByIdRef(String idRef) {
+        // Retrieve the DataSubject to have its category
+        DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
+        // Retrieve associated processings and datas
+        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDscId());
+        ArrayList<DataResponseDTO> datas = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubject.getDscId()));
+
+        // Construct response
+        ArrayList<ProcessedPersonalDataDTO> response = new ArrayList<>();
+        for (ProcessingResponseDTO processing: processings) {
+            ProcessedPersonalDataDTO p = new ProcessedPersonalDataDTO();
+            p.setProcessingName(processing.getName());
+            // Purposes
+            processing.getPurposes().forEach(purpose -> {
+                p.addPurposeDescription(purpose.getDescription());
+            });
+            // Datas
+            processing.getDataUsages().forEach(dataUsage -> {
+                p.addDataAttribute(dataService.getAttributeById(dataUsage.getDataId()));
+            });
+
+            response.add(p);
+        }
+
+        return response;
+    }
+
 }

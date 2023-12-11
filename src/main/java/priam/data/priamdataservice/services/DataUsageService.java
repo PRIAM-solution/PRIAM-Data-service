@@ -6,7 +6,7 @@ import priam.data.priamdataservice.dto.DataUsageResponseDTO;
 import priam.data.priamdataservice.entities.Data;
 import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.mappers.DataUsageMapper;
-import priam.data.priamdataservice.openfeign.DataRestClient;
+import priam.data.priamdataservice.repositories.DataRepository;
 import priam.data.priamdataservice.repositories.DataUsageRepository;
 
 import javax.annotation.Generated;
@@ -24,14 +24,13 @@ import java.util.Collection;
 public class DataUsageService implements DataUsageServiceInterface {
 
     private DataUsageRepository dataUsageRepository;
+    private DataRepository dataRepository;
     private DataUsageMapper dataUsageMapper;
 
-    private DataRestClient dataRestClient;
-
-    public DataUsageService(DataUsageMapper dataUsageMapper, DataUsageRepository dataUsageRepository, DataRestClient dataRestClient) {
+    public DataUsageService(DataUsageMapper dataUsageMapper, DataUsageRepository dataUsageRepository, DataRepository dataRepository) {
         this.dataUsageMapper = dataUsageMapper;
         this.dataUsageRepository = dataUsageRepository;
-        this.dataRestClient = dataRestClient;
+        this.dataRepository = dataRepository;
     }
     @Override
     public DataUsage createDataUsage(DataUsage dataUsage) {
@@ -58,7 +57,7 @@ public class DataUsageService implements DataUsageServiceInterface {
     @Override
     public DataUsageResponseDTO getDataUsage(Long dataUsageId) {
         DataUsage dataUsage = dataUsageRepository.findById(dataUsageId).get();
-        Data data = dataRestClient.getData(dataUsage.getDataId());
+        Data data = dataRepository.findById(dataUsage.getDataId()).get();
         dataUsage.setData(data);
         return dataUsageMapper.fromDataUsage(dataUsage);/*.orElseThrow();*/
     }
@@ -68,7 +67,8 @@ public class DataUsageService implements DataUsageServiceInterface {
         //Collection<DataUsage> datausages = dataUsageRepository.findAll();
         Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessingId(processingId);
         for (DataUsage d: datausages){
-            d.setData(dataRestClient.getData(d.getDataId()));
+            Data data = dataRepository.findById(d.getDataId()).get();
+            d.setData(data);
         }
         return datausages;
     }
