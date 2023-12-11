@@ -4,11 +4,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import priam.data.priamdataservice.dto.DataRequestDTO;
-import priam.data.priamdataservice.dto.DataResponseDTO;
-import priam.data.priamdataservice.dto.DataTypeResponseDTO;
+import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.entities.DataType;
 import priam.data.priamdataservice.services.DataService;
+import priam.data.priamdataservice.services.ProcessingService;
 
 import java.util.List;
 
@@ -17,10 +16,12 @@ import java.util.List;
 @RequestMapping(path = "/api")
 public class DataRestAPI {
 
-    private DataService dataService;
+    private final DataService dataService;
+    private final ProcessingService processingService;
 
-    public DataRestAPI(DataService dataService) {
+    public DataRestAPI(DataService dataService, ProcessingService processingService) {
         this.dataService = dataService;
+        this.processingService = processingService;
     }
     @PostMapping(path = "/data")
     public void save(DataRequestDTO dataRequestDTO) {this.dataService.save(dataRequestDTO);}
@@ -60,12 +61,10 @@ public class DataRestAPI {
         return dataService.getPersonalDataByDataTypeName(dataTypeName);
     }
 
-   /*
-   @GetMapping(path = "/dataType/{id}")
-    public DataTypeResponseDTO getDataType(@PathVariable int id) {
-        return dataService.getDataTypeByDataId(id);
-    }*/
-
+    @GetMapping(path = "/data/processedPersonalDataList/purposes/{idRef}")
+    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataListPurposes(@PathVariable String idRef) {
+        return processingService.getProcessedPersonalDataListByIdRef(idRef);
+    }
 
 
 }
