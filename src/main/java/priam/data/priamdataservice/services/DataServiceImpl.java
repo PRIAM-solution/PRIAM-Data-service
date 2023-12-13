@@ -211,4 +211,31 @@ public class DataServiceImpl implements DataService {
         });
         return response;
     }
+
+    @Override
+    public List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef) {
+        int dSCategory = dataSubjectRestClient.getDataSubjectByRef(idRef).getDscId();
+        ArrayList<Data> dataList = new ArrayList<>(dataRepository.findAllByDscId(dSCategory));
+        ArrayList<ProcessedIndirectAndProducedPersonalDataDTO> response = new ArrayList<>();
+
+        // Get indirect and produced datas
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Direct)).toList());
+
+        nondirectDatas.forEach(data -> {
+            // Construct each dataType
+            Optional<ProcessedIndirectAndProducedPersonalDataDTO> processedIndirectAndProducedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
+            ProcessedIndirectAndProducedPersonalDataDTO dataType = null;
+            if(processedIndirectAndProducedPersonalDataDTO.isPresent()) {
+                dataType = processedIndirectAndProducedPersonalDataDTO.get();
+            }
+            else {
+                dataType = new ProcessedIndirectAndProducedPersonalDataDTO(data.getDataType().getDataTypeName());
+                response.add(dataType);
+            }
+
+            dataType.addData(data.getId(), data.getAttribute());
+        });
+
+        return response;
+    }
 }

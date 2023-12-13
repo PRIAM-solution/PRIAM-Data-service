@@ -67,5 +67,10 @@ public class DataRestAPI {
         return processingService.getProcessingPersonalDataListPurposes(idRef);
     }
 
+    @GetMapping(path = "/data/processedIndirectAndProducedPersonalDataList/{idRef}")
+    public List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(@PathVariable String idRef) {
+        return dataService.getProcessedIndirectAndProducedPersonalDataList(idRef);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package priam.data.priamdataservice.services;
 
 import priam.data.priamdataservice.dto.DataRequestDTO;
 import priam.data.priamdataservice.dto.DataResponseDTO;
+import priam.data.priamdataservice.dto.ProcessedIndirectAndProducedPersonalDataDTO;
 import priam.data.priamdataservice.dto.ProcessedPersonalDataDTO;
 
 import java.util.List;
@@ -29,4 +30,5 @@ public interface DataService {
     List<DataResponseDTO> getPersonalDataByDataTypeName(String dataTypeName);
 
     List<ProcessedPersonalDataDTO> getProcessedPersonalDataList(String idRef);
+    List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef);
 }
