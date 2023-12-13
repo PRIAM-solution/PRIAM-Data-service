@@ -23,7 +23,7 @@ public class DataResponseDTO {
     private boolean isPortable;
     private int data_type_id;
     private String data_type_name;
-    private String primary_key_name;
+    private boolean isPrimaryKey;
     private DSCategory dsCategory;
     private PersonalDataCategory personalDataCategory;
 }

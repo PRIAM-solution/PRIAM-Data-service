@@ -23,8 +23,6 @@ public class DataType {
     //@Column(name = "dataTypeName")
     @JoinColumn(name = "data_type_name")
     private String dataTypeName;
-    @JoinColumn(name = "primary_key_name")
-    private String primaryKeyName;
 
     @JsonManagedReference
     @OneToMany(mappedBy ="dataType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

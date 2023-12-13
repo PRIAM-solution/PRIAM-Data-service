@@ -21,6 +21,7 @@ public class DataRequestDTO {
     private Source source;
     private int dataConservation;
     private boolean isPortable;
+    private boolean isPrimaryKey;
     private int data_type_id;
     private int dscId;
     private PersonalDataCategory personalDataCategory;

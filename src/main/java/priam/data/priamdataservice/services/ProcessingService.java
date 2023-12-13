@@ -109,7 +109,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
         return processingsDsc;
     }
     @Override
-    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataListByIdRef(String idRef) {
+    public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef) {
         // Retrieve the DataSubject to have its category
         DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
         // Retrieve associated processings and datas
@@ -117,9 +117,9 @@ public class ProcessingService implements ProcessingServiceInterface  {
         ArrayList<DataResponseDTO> datas = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubject.getDscId()));
 
         // Construct response
-        ArrayList<ProcessedPersonalDataDTO> response = new ArrayList<>();
+        ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
         for (ProcessingResponseDTO processing: processings) {
-            ProcessedPersonalDataDTO p = new ProcessedPersonalDataDTO();
+            ProcessingPersonalDataDTO p = new ProcessingPersonalDataDTO();
             p.setProcessingName(processing.getName());
             // Purposes
             processing.getPurposes().forEach(purpose -> {

@@ -20,7 +20,6 @@ public interface DataMapper {
     //@Mapping(target = "data.dataType.dataList", ignore = true)
 
     @Mapping(target = "data_type_name", source = "data.dataType.dataTypeName")
-    @Mapping(target = "primary_key_name", source = "data.dataType.primaryKeyName")
     @Mapping(target = "data_type_id", source = "data.dataType.dataTypeId")
     @Mapping(target = "dsCategory", source = "data.dsCategory")
     DataResponseDTO DataToDataResponseDTO(Data data);

@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -13,23 +15,41 @@ public class ProcessedPersonalDataDTO {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class PurposeListItem {
-        private String description;
+    private static class PrimaryKeysListItem {
+        private String primaryKeyName;
     }
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     private static class DataListItem {
         private String attributeName;
+        private List<String> dataValue;
+        private int dataConservationDuration;
+        private String source;
+        private String sourceDetails;
+        private String personalDataCategory;
     }
-    private String processingName;
-    private List<PurposeListItem> purposeList;
-    private List<DataListItem> dataList;
+    private String dataTypeName;
+    private List<PrimaryKeysListItem> primaryKeys;
+    private List<DataListItem> data;
 
-    public void addPurposeDescription(String description) {
-        this.purposeList.add(new PurposeListItem(description));
+
+    public ProcessedPersonalDataDTO(String dataTypeName) {
+        this.setDataTypeName(dataTypeName);
+        this.setPrimaryKeys(new ArrayList<>());
     }
-    public void addDataAttribute(String description) {
-        this.dataList.add(new DataListItem(description));
+    public void addPrimaryKey(String primaryKeyName) {
+        this.getPrimaryKeys().add(new PrimaryKeysListItem(primaryKeyName));
+    }
+    public void addData(String dataAttributeName, List<String> dataValues, int dataConservationDuration, String source, String sourceDetails, String personalDataCategory) {
+        DataListItem data = new DataListItem();
+        data.setAttributeName(dataAttributeName);
+        data.setDataValue(dataValues);
+        data.setSource(source);
+        data.setSourceDetails(sourceDetails);
+        data.setDataConservationDuration(dataConservationDuration);
+        data.setPersonalDataCategory(personalDataCategory);
+
+        this.getData().add(data);
     }
 }

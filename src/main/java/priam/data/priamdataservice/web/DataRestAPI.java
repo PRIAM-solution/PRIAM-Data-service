@@ -1,11 +1,7 @@
 package priam.data.priamdataservice.web;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
-import priam.data.priamdataservice.entities.DataType;
 import priam.data.priamdataservice.services.DataService;
 import priam.data.priamdataservice.services.ProcessingService;
 
@@ -61,9 +57,14 @@ public class DataRestAPI {
         return dataService.getPersonalDataByDataTypeName(dataTypeName);
     }
 
+    @GetMapping(path = "/data/processedPersonalDataList/{idRef}")
+    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataList(@PathVariable String idRef) {
+        return dataService.getProcessedPersonalDataList(idRef);
+    }
+
     @GetMapping(path = "/data/processedPersonalDataList/purposes/{idRef}")
-    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataListPurposes(@PathVariable String idRef) {
-        return processingService.getProcessedPersonalDataListByIdRef(idRef);
+    public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(@PathVariable String idRef) {
+        return processingService.getProcessingPersonalDataListPurposes(idRef);
     }
 
 
