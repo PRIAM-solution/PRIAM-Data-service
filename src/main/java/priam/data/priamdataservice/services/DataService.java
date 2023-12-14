@@ -12,6 +12,7 @@ import priam.data.priamdataservice.openfeign.ProviderRestClient;
 import priam.data.priamdataservice.openfeign.RightRestClient;
 import priam.data.priamdataservice.repositories.DataRepository;
 import priam.data.priamdataservice.repositories.DataTypeRepository;
+import priam.data.priamdataservice.repositories.PersonalDataTransferRepository;
 import priam.data.priamdataservice.repositories.ProcessedDataRepository;
 
 import javax.annotation.Generated;
@@ -36,8 +37,9 @@ public class DataService implements DataServiceInterface {
 
     final DataTypeRepository dataTypeRepository;
     final ProcessedDataRepository processedDataRepository;
+    private final PersonalDataTransferRepository personalDataTransferRepository;
 
-    public DataService(DataRepository dataRepository, DataMapper dataMapper, DataTypeMapper dataTypeMapper, DataTypeRepository dataTypeRepository, ProcessedDataRepository processedDataRepository, DataSubjectRestClient dataSubjectRestClient, RightRestClient rightRestClient, ProviderRestClient providerRestClient) {
+    public DataService(DataRepository dataRepository, DataMapper dataMapper, DataTypeMapper dataTypeMapper, DataTypeRepository dataTypeRepository, ProcessedDataRepository processedDataRepository, DataSubjectRestClient dataSubjectRestClient, RightRestClient rightRestClient, ProviderRestClient providerRestClient, PersonalDataTransferRepository personalDataTransferRepository) {
         this.dataRepository = dataRepository;
         this.dataMapper = dataMapper;
         this.dataTypeMapper = dataTypeMapper;
@@ -46,6 +48,7 @@ public class DataService implements DataServiceInterface {
         this.dataSubjectRestClient = dataSubjectRestClient;
         this.rightRestClient = rightRestClient;
         this.providerRestClient = providerRestClient;
+        this.personalDataTransferRepository = personalDataTransferRepository;
     }
 
 
@@ -259,19 +262,25 @@ public class DataService implements DataServiceInterface {
 
     @Override
     public List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(String idRef) {
-        //Get the list of secondary actors for whom the processed data is transferred.
+        // Get the list of processed personal data
+        List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
 
-        // Get all the processed personal data
-        ArrayList<ProcessedPersonalDataDTO> processedPersonalDataDTOArrayList = (ArrayList<ProcessedPersonalDataDTO>) this.getProcessedPersonalDataList(idRef);
+        List<SecondaryActorDTO> secondaryActorDTOArrayList = new ArrayList<>();
 
-        ArrayList<SecondaryActorDTO> secondaryActorDTOArrayList = new ArrayList<>();
-        for (ProcessedPersonalDataDTO processedPersonalDataDTO: processedPersonalDataDTOArrayList) {
-            // Get the list of secondary actors for whom the processed data is transferred.
-            ArrayList<SecondaryActorDTO> secondaryActorDTOArrayList1 = (ArrayList<SecondaryActorDTO>) providerRestClient.getSecondaryActorsByDataTypeName(processedPersonalDataDTO.getDataTypeName());
-            for (SecondaryActorDTO secondaryActorDTO: secondaryActorDTOArrayList1) {
-                // If the secondary actor is not already in the list, we add it
-                if(!secondaryActorDTOArrayList.contains(secondaryActorDTO)) {
-                    secondaryActorDTOArrayList.add(secondaryActorDTO);
+        // Iterate through each processed data
+        for (ProcessedPersonalDataDTO processedPersonalDataDTO : processedPersonalDataDTOList) {
+            // Iterate through data items within the processed data
+            for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
+                int dataId = dataListItem.getDataId();
+
+                // Query PersonalDataTransfer repository to get secondary actors by dataId
+                List<SecondaryActorDTO> secondaryActors = personalDataTransferRepository.findSecondaryActorsByDataId(dataId);
+
+                // Add fetched secondary actors to the result list, if not already present
+                for (SecondaryActorDTO secondaryActorDTO : secondaryActors) {
+                    if (!secondaryActorDTOArrayList.contains(secondaryActorDTO)) {
+                        secondaryActorDTOArrayList.add(secondaryActorDTO);
+                    }
                 }
             }
         }

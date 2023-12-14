@@ -21,7 +21,7 @@ public class ProcessedPersonalDataDTO {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class DataListItem {
+    public static class DataListItem {
         private int dataId;
         private String attributeName;
         private List<String> dataValue;
