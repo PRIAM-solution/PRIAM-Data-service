@@ -1,6 +1,6 @@
 package priam.data.priamdataservice.services;
 
-import priam.data.priamdataservice.dto.ProcessedPersonalDataDTO;
+import priam.data.priamdataservice.dto.ProcessingPersonalDataDTO;
 import priam.data.priamdataservice.dto.ProcessingRequestDTO;
 import priam.data.priamdataservice.dto.ProcessingResponseDTO;
 import priam.data.priamdataservice.entities.Processing;
@@ -16,6 +16,6 @@ public interface ProcessingServiceInterface {
 
     Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId);
 
-    Collection<ProcessedPersonalDataDTO> getProcessedPersonalDataListByIdRef(String idRef);
+    Collection<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef);
 
 }

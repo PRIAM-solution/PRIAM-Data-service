@@ -32,15 +32,12 @@ public class Data {
     private Category Category;
     @Column
     private Source source;
-    //@ManyToOne
-    //@Column
-    //*private String locationId;
-
     @Column
     private int dataConservation;
-
     @Column
     private boolean isPortable;
+    @Column
+    private boolean isPrimaryKey;
 
     private int dscId;
     @Transient

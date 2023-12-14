@@ -12,5 +12,4 @@ public class DataTypeResponseDTO {
     private int dataTypeId;
     private int dataTypeName;
     private List<DataResponseDTO> dataList;
-    private String primaryKeyName;
 }

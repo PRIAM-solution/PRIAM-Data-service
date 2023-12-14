@@ -11,6 +11,5 @@ import java.util.List;
 public class DataTypeRequestDTO {
     private int dataTypeId;
     private int dataTypeName;
-    private String primaryKeyName;;
     //private List<DataRequestDTO> dataList;
 }
