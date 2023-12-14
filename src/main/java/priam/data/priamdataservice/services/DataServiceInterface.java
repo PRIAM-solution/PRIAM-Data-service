@@ -19,6 +19,7 @@ public interface DataServiceInterface {
     void setDataAttribute(String attribute, String newValue);
 
     List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory);
+    List<DataResponseDTO> findAllProcessedDataByDataSubjectCategory(int dSCategory, int dataSubjectId);
 
     DataResponseDTO save(DataRequestDTO dataRequestDTO);
 
@@ -27,6 +28,7 @@ public interface DataServiceInterface {
     List<DataResponseDTO> getPersonalDataByDataTypeName(String dataTypeName);
 
     List<ProcessedPersonalDataDTO> getProcessedPersonalDataList(String idRef);
+
     List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef);
 
     List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(String idRef);
