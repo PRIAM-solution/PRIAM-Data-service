@@ -2,9 +2,10 @@ package priam.data.priamdataservice.web;
 
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
-import priam.data.priamdataservice.services.DataService;
-import priam.data.priamdataservice.services.ProcessingService;
+import priam.data.priamdataservice.services.DataServiceInterface;
+import priam.data.priamdataservice.services.ProcessingServiceInterface;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -12,13 +13,14 @@ import java.util.List;
 @RequestMapping(path = "/api")
 public class DataRestAPI {
 
-    private final DataService dataService;
-    private final ProcessingService processingService;
+    private final DataServiceInterface dataService;
+    private final ProcessingServiceInterface processingService;
 
-    public DataRestAPI(DataService dataService, ProcessingService processingService) {
+    public DataRestAPI(DataServiceInterface dataService, ProcessingServiceInterface processingService) {
         this.dataService = dataService;
         this.processingService = processingService;
     }
+
     @PostMapping(path = "/data")
     public void save(DataRequestDTO dataRequestDTO) {this.dataService.save(dataRequestDTO);}
 
@@ -63,7 +65,7 @@ public class DataRestAPI {
     }
 
     @GetMapping(path = "/data/processedPersonalDataList/purposes/{idRef}")
-    public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(@PathVariable String idRef) {
+    public Collection<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(@PathVariable String idRef) {
         return processingService.getProcessingPersonalDataListPurposes(idRef);
     }
 
@@ -72,5 +74,13 @@ public class DataRestAPI {
         return dataService.getProcessedIndirectAndProducedPersonalDataList(idRef);
     }
 
-
+    /**
+     * Get the list of secondary actors for whom the processed data is transferred.
+     * @param idRef the ID of the user
+     * @return the list of secondary actors
+     **/
+    @GetMapping(path = "/data/processedPersonalDataList/transfer/{idRef}")
+    public List<?> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
+        return dataService.getProcessedPersonalDataListTransfer(idRef);
+    }
 }
