@@ -80,7 +80,7 @@ public class DataRestAPI {
      * @return the list of secondary actors
      **/
     @GetMapping(path = "/data/processedPersonalDataList/transfer/{idRef}")
-    public List<?> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
+    public List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
         return dataService.getProcessedPersonalDataListTransfer(idRef);
     }
 }

@@ -13,11 +13,8 @@ import java.util.Collection;
 @lombok.Data
 public class SecondaryActorCategory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int secondaryActorCategoryId;
 
     private String secondaryActorCategoryName;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy ="secondaryActorCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<DataSubject> secondaryActors;
 }

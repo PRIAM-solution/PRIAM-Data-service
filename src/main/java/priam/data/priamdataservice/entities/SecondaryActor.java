@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "secondary_actor")
 public class SecondaryActor {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String email;
@@ -26,7 +24,6 @@ public class SecondaryActor {
     private String username;
     private String password;
 
-    @JsonBackReference
     @ManyToOne
     private SecondaryActorCategory secondaryActorCategory;
 }

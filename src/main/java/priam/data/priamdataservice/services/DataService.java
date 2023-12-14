@@ -237,4 +237,25 @@ public class DataService implements DataServiceInterface {
 
         return response;
     }
+
+    @Override
+    public List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(String idRef) {
+        //Get the list of secondary actors for whom the processed data is transferred.
+
+        // Get all the processed personal data
+        ArrayList<ProcessedPersonalDataDTO> processedPersonalDataDTOArrayList = (ArrayList<ProcessedPersonalDataDTO>) this.getProcessedPersonalDataList(idRef);
+
+        ArrayList<SecondaryActorDTO> secondaryActorDTOArrayList = new ArrayList<>();
+        for (ProcessedPersonalDataDTO processedPersonalDataDTO: processedPersonalDataDTOArrayList) {
+            // Get the list of secondary actors for whom the processed data is transferred.
+            ArrayList<SecondaryActorDTO> secondaryActorDTOArrayList1 = (ArrayList<SecondaryActorDTO>) providerRestClient.getSecondaryActorsByDataTypeName(processedPersonalDataDTO.getDataTypeName());
+            for (SecondaryActorDTO secondaryActorDTO: secondaryActorDTOArrayList1) {
+                // If the secondary actor is not already in the list, we add it
+                if(!secondaryActorDTOArrayList.contains(secondaryActorDTO)) {
+                    secondaryActorDTOArrayList.add(secondaryActorDTO);
+                }
+            }
+        }
+        return null;
+    }
 }

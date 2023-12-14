@@ -1,2 +1,33 @@
-package priam.data.priamdataservice.entities;public class PersonalDataTransfer {
+package priam.data.priamdataservice.entities;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@lombok.Data
+@Table(name = "personal_data_transfer")
+public class PersonalDataTransfer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @OneToOne
+    private Processing processing;
+
+    @ManyToMany
+    @JoinTable(name = "data_transfer",
+            joinColumns = @JoinColumn(name = "transfer_id"),
+            inverseJoinColumns = @JoinColumn(name = "data_id"))
+    private List<Data> data;
+
+    @ManyToMany
+    @JoinTable(name = "secondary_actor_transfer",
+            joinColumns = @JoinColumn(name = "transfer_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private List<SecondaryActor> secondaryActors;
 }
