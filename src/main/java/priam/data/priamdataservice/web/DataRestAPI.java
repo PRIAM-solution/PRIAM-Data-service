@@ -23,6 +23,7 @@ public class DataRestAPI {
         this.dataService = dataService;
         this.processingService = processingService;
     }
+
     @PostMapping(path = "/data")
     public void save(DataRequestDTO dataRequestDTO) {this.dataService.save(dataRequestDTO);}
 
