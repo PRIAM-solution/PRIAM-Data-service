@@ -22,6 +22,7 @@ public class ProcessedPersonalDataDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     private static class DataListItem {
+        private int dataId;
         private String attributeName;
         private List<String> dataValue;
         private int dataConservationDuration;
@@ -41,8 +42,9 @@ public class ProcessedPersonalDataDTO {
     public void addPrimaryKey(String primaryKeyName) {
         this.getPrimaryKeys().add(new PrimaryKeysListItem(primaryKeyName));
     }
-    public void addData(String dataAttributeName, List<String> dataValues, int dataConservationDuration, String source, String sourceDetails, String personalDataCategory) {
+    public void addData(int dataId, String dataAttributeName, List<String> dataValues, int dataConservationDuration, String source, String sourceDetails, String personalDataCategory) {
         DataListItem data = new DataListItem();
+        data.setDataId(dataId);
         data.setAttributeName(dataAttributeName);
         data.setDataValue(dataValues);
         data.setSource(source);

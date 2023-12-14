@@ -22,6 +22,7 @@ public interface DataService {
     void setDataAttribute(String attribute, String newValue);
 
     List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory);
+    List<DataResponseDTO> findAllProcessedDataByDataSubjectCategory(int dSCategory, int dataSubjectId);
 
     DataResponseDTO save(DataRequestDTO dataRequestDTO);
 
