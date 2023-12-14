@@ -66,5 +66,13 @@ public class DataRestAPI {
         return processingService.getProcessedPersonalDataListByIdRef(idRef);
     }
 
-
+    /**
+     * Get the list of secondary actors for whom the processed data is transferred.
+     * @param idRef the ID of the user
+     * @return the list of secondary actors
+     **/
+    @GetMapping(path = "/data/processedPersonalDataList/transfer/{idRef}")
+    public List<?> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
+        return dataService.getProcessedPersonalDataListTransfer(idRef);
+    }
 }
