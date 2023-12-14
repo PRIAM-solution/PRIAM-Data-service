@@ -23,11 +23,11 @@ public class ProcessingService implements ProcessingServiceInterface  {
 
     private ProcessingMapper processingMapper;
     private DataUsageService dataUsageService;
-    private DataServiceImpl dataService;
+    private DataService dataService;
     private ProcessingRepository processingRepository;
     private DataSubjectRestClient dataSubjectRestClient;
 
-    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataUsageService dataUsageService, DataServiceImpl dataService, DataSubjectRestClient dataSubjectRestClient) {
+    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataUsageService dataUsageService, DataService dataService, DataSubjectRestClient dataSubjectRestClient) {
         this.processingMapper = processingMapper;
         this.processingRepository = processingRepository;
         this.dataUsageService = dataUsageService;
