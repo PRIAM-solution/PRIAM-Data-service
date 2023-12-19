@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface DataTypeMapper {
 
+    DataType DataTypeRequestDTOToDataType(DataTypeRequestDTO dataTypeRequestDTO);
+
     DataTypeResponseDTO DataTypeToDataTypeResponseDTO(DataType dataType);
-    //@Mapping(target = "dataList"/*, ignore = true*/, source = "dataTypeRequestDTO.dataList")
-    //DataType DataTypeRequestDTOToDataType(DataTypeRequestDTO dataTypeRequestDTO);
 
 }

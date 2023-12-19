@@ -1,6 +1,8 @@
 package priam.data.priamdataservice.entities;
 
-public class ProcessedDataKey {
+import java.io.Serializable;
+
+public class ProcessedDataKey implements Serializable {
     private int dataSubjectId;
     private int dataId;
 }

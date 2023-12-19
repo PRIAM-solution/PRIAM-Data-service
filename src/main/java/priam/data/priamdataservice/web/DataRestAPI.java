@@ -3,6 +3,7 @@ package priam.data.priamdataservice.web;
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.services.DataServiceInterface;
+import priam.data.priamdataservice.services.DataTypeServiceInterface;
 import priam.data.priamdataservice.services.ProcessingServiceInterface;
 
 import java.util.Collection;
@@ -14,15 +15,19 @@ import java.util.List;
 public class DataRestAPI {
 
     private final DataServiceInterface dataService;
+    private final DataTypeServiceInterface dataTypeService;
     private final ProcessingServiceInterface processingService;
 
-    public DataRestAPI(DataServiceInterface dataService, ProcessingServiceInterface processingService) {
+    public DataRestAPI(DataServiceInterface dataService, DataTypeServiceInterface dataTypeService, ProcessingServiceInterface processingService) {
         this.dataService = dataService;
+        this.dataTypeService = dataTypeService;
         this.processingService = processingService;
     }
 
     @PostMapping(path = "/data")
-    public void save(DataRequestDTO dataRequestDTO) {this.dataService.save(dataRequestDTO);}
+    public DataResponseDTO save(@RequestBody DataRequestDTO dataRequestDTO) { return this.dataService.save(dataRequestDTO); }
+    @PostMapping(path = "/datatype")
+    public DataTypeResponseDTO save(@RequestBody DataTypeRequestDTO dataTypeRequestDTO) { return this.dataTypeService.save(dataTypeRequestDTO); }
 
     @GetMapping(path = "/dataId/{attribute}")
     public int getIdByName(@PathVariable String attribute) {

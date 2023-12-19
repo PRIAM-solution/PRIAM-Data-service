@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(ConsentKey.class)
+@IdClass(ProcessedDataKey.class)
 @Table(name="processed_data")
 public class ProcessedData {
     @Id

@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 public class DataTypeResponseDTO {
     private int dataTypeId;
-    private int dataTypeName;
+    private String dataTypeName;
     private List<DataResponseDTO> dataList;
 }
