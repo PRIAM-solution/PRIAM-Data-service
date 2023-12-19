@@ -6,6 +6,7 @@ import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.entities.Processing;
 import priam.data.priamdataservice.mappers.ProcessingMapper;
 import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
+import priam.data.priamdataservice.repositories.DataUsageRepository;
 import priam.data.priamdataservice.repositories.ProcessingRepository;
 
 import javax.annotation.Generated;
@@ -20,24 +21,30 @@ import java.util.*;
 @Service
 public class ProcessingService implements ProcessingServiceInterface  {
 
-
     private ProcessingMapper processingMapper;
     private DataUsageService dataUsageService;
     private DataService dataService;
     private ProcessingRepository processingRepository;
+    private DataUsageRepository dataUsageRepository;
     private DataSubjectRestClient dataSubjectRestClient;
 
-    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataUsageService dataUsageService, DataService dataService, DataSubjectRestClient dataSubjectRestClient) {
+    public ProcessingService(ProcessingMapper processingMapper, DataUsageService dataUsageService, DataService dataService, ProcessingRepository processingRepository, DataUsageRepository dataUsageRepository, DataSubjectRestClient dataSubjectRestClient) {
         this.processingMapper = processingMapper;
-        this.processingRepository = processingRepository;
         this.dataUsageService = dataUsageService;
         this.dataService = dataService;
+        this.processingRepository = processingRepository;
+        this.dataUsageRepository = dataUsageRepository;
         this.dataSubjectRestClient = dataSubjectRestClient;
     }
+
     @Override
     public Processing createProcessing(ProcessingRequestDTO processingRequestDTO) {
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
         Processing res = processingRepository.save(processing);
+        res.getDataUsages().forEach(dataUsage -> {
+            dataUsage.setProcessing(res);
+            dataUsageRepository.save(dataUsage);
+        });
         return res;
     }
 

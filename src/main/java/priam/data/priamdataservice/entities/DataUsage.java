@@ -28,7 +28,7 @@ public class DataUsage {
     private boolean d;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Processing processing;
     private int dataId;
     @Transient

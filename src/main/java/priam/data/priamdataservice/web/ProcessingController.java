@@ -21,7 +21,7 @@ public class ProcessingController {
     }
 
     @PostMapping("/create")
-    public Processing newProcessing(ProcessingRequestDTO processingRequestDTO) {
+    public Processing newProcessing(@RequestBody ProcessingRequestDTO processingRequestDTO) {
         return processingService.createProcessing(processingRequestDTO);
     }
 

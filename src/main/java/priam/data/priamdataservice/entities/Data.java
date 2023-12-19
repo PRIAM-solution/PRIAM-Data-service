@@ -45,12 +45,12 @@ public class Data {
     @Transient
     private DataType dataTypeObject;
 
-    @JsonBackReference
+    @JsonBackReference(value = "data_list")
     @ManyToOne
     @JoinColumn(name = "data_type_id")
     private DataType dataType;
 
-    @JsonBackReference
+    @JsonBackReference(value = "personal_data_category")
     @ManyToOne
     @JoinColumn(name = "pd_category_id")
     private PersonalDataCategory personalDataCategory;

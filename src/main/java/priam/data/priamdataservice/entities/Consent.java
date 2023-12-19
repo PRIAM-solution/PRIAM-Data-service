@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name="consent")
 public class Consent {
     @Id
-    private int dataSubjectId;
+    private Long dataSubjectId;
     @Id
-    private int processingId;
+    private Long processingId;
 }

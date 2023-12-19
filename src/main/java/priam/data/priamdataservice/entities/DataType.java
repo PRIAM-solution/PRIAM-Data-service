@@ -24,7 +24,7 @@ public class DataType {
     @JoinColumn(name = "data_type_name")
     private String dataTypeName;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "data_list")
     @OneToMany(mappedBy ="dataType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Data> dataList;
 
