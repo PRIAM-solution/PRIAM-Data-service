@@ -1,4 +1,4 @@
-package priam.data.priamdataservice.entities;
+package priam.data.priamdataservice.entities.consent;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

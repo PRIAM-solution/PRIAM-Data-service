@@ -184,7 +184,8 @@ public class DataService implements DataServiceInterface {
             ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
             ArrayList<String> values = new ArrayList<>();
             valuesResponse.forEach(valueMap -> {
-                values.add(valueMap.get(data.getAttribute()));
+                if(valueMap.get("attribute").equals(data.getAttribute()))
+                    values.add(valueMap.get("value"));
             });
             dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
@@ -216,7 +217,8 @@ public class DataService implements DataServiceInterface {
                 ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
                 ArrayList<String> values = new ArrayList<>();
                 valuesResponse.forEach(valueMap -> {
-                    values.add(valueMap.get(data.getAttribute()));
+                    if(valueMap.get("attribute").equals(data.getAttribute()))
+                        values.add(valueMap.get("value"));
                 });
                 dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
@@ -226,6 +228,7 @@ public class DataService implements DataServiceInterface {
                 }
             }
         });
+        System.out.println(response);
         return response;
     }
 

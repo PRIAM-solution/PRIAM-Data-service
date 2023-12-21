@@ -2,7 +2,7 @@ package priam.data.priamdataservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import priam.data.priamdataservice.entities.ProcessedData;
+import priam.data.priamdataservice.entities.consent.ProcessedData;
 
 import java.util.List;
 

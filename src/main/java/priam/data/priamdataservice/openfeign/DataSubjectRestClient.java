@@ -8,7 +8,7 @@ import priam.data.priamdataservice.entities.DSCategory;
 @FeignClient(name = "DATA-SUBJECT-SERVICE")
 public interface DataSubjectRestClient {
 
-    @GetMapping(path = "api/DataSubject/{idRef}")
+    @GetMapping(path = "api/DataSubject/ref/{idRef}")
     public DataSubjectResponseDTO getDataSubjectByRef(@PathVariable String idRef);
     @GetMapping(path = "api/DSCategory/{dscId}")
     public DSCategory getDSCategoryById(@PathVariable int dscId);

@@ -22,6 +22,7 @@ import static ch.qos.logback.core.joran.util.beans.BeanUtil.getPropertyName;
 public class Data {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private String attribute;

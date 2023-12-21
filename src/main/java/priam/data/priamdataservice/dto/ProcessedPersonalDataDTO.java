@@ -31,8 +31,8 @@ public class ProcessedPersonalDataDTO {
         private String personalDataCategory;
     }
     private String dataTypeName;
-    private List<PrimaryKeysListItem> primaryKeys;
-    private List<DataListItem> data;
+    private List<PrimaryKeysListItem> primaryKeys = new ArrayList<>();
+    private List<DataListItem> data = new ArrayList<>();
 
 
     public ProcessedPersonalDataDTO(String dataTypeName) {
