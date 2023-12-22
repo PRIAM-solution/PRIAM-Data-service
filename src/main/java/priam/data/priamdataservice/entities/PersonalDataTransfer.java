@@ -14,7 +14,8 @@ import java.util.List;
 public class PersonalDataTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "transfer_id")
+    private int transferId;
 
     @OneToOne
     private Processing processing;

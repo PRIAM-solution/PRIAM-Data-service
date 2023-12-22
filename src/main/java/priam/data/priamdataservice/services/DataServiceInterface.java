@@ -1,6 +1,7 @@
 package priam.data.priamdataservice.services;
 
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.Data;
 
 import java.util.List;

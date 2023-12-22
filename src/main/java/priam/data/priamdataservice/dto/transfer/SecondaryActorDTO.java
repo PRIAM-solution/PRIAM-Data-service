@@ -1,4 +1,4 @@
-package priam.data.priamdataservice.dto;
+package priam.data.priamdataservice.dto.transfer;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

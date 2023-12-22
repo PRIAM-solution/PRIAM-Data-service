@@ -2,6 +2,7 @@ package priam.data.priamdataservice.web;
 
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.services.DataServiceInterface;
 import priam.data.priamdataservice.services.DataTypeServiceInterface;
 import priam.data.priamdataservice.services.ProcessingServiceInterface;
