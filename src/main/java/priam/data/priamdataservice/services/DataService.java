@@ -123,17 +123,16 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory) {
         List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
         List<DataResponseDTO> personalData = dataList.stream()
-                .map(datum -> dataMapper.DataToDataResponseDTO(datum))
                 .filter(dto -> dto.isPersonal())
+                .map(dto -> dataMapper.DataToDataResponseDTO(dto))
                 .collect(Collectors.toList());
         return personalData;
     }
     @Override
-    public List<DataResponseDTO> findAllProcessedDataByDataSubjectCategory(int dSCategory, int dataSubjectId) {
+    public List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId) {
         List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
         List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
-        List<DataResponseDTO> personalData = dataList.stream()
-                .map(datum -> dataMapper.DataToDataResponseDTO(datum))
+        List<Data> personalData = dataList.stream()
                 .filter(dto -> dto.isPersonal() && processedDataIds.contains(dto.getId()))
                 .collect(Collectors.toList());
         return personalData;
@@ -160,9 +159,8 @@ public class DataService implements DataServiceInterface {
         DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
         int dSCategory = dataSubject.getDscId();
         int dataSubjectId = dataSubject.getId();
-        ArrayList<Data> dataByCategory = new ArrayList<>(dataRepository.findAllByDscId(dSCategory));
-        List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
-        ArrayList<Data> dataList = new ArrayList<>(dataByCategory.stream().filter(data -> processedDataIds.contains(data.getId())).toList());
+
+        ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // First, get all direct datas
         ArrayList<Data> directDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Direct)).toList());
@@ -228,7 +226,6 @@ public class DataService implements DataServiceInterface {
                 }
             }
         });
-        System.out.println(response);
         return response;
     }
 
@@ -238,12 +235,10 @@ public class DataService implements DataServiceInterface {
         DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
         int dSCategory = dataSubject.getDscId();
         int dataSubjectId = dataSubject.getId();
-        ArrayList<Data> dataByCategory = new ArrayList<>(dataRepository.findAllByDscId(dSCategory));
-        List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
-        ArrayList<Data> dataList = new ArrayList<>(dataByCategory.stream().filter(data -> processedDataIds.contains(data.getId())).toList());
+        ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // Get indirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Direct)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> !d.getSource().equals(Source.Direct)).toList());
 
         nondirectDatas.forEach(data -> {
             // Construct each dataType

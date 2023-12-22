@@ -2,6 +2,7 @@ package priam.data.priamdataservice.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import priam.data.priamdataservice.enums.ProcessingCategory;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "gdpr_Processing")
-@lombok.Data
+@lombok.Data @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Processing {
@@ -43,6 +44,7 @@ public class Processing {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatingDate;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processing",fetch = FetchType.LAZY)
     private List<DataUsage> dataUsages = new ArrayList<>();
 

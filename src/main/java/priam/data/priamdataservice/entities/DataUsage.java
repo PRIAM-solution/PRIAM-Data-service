@@ -3,12 +3,13 @@ package priam.data.priamdataservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "gdpr_Datausage")
-@lombok.Data
+@lombok.Data @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataUsage {
@@ -27,6 +28,7 @@ public class DataUsage {
 
     private boolean d;
 
+    @ToString.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Processing processing;

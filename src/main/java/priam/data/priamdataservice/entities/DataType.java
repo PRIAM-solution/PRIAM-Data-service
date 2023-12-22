@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@lombok.Data
+@lombok.Data @ToString
 @Table
 public class DataType {
     @Id
@@ -24,6 +25,7 @@ public class DataType {
     @JoinColumn(name = "data_type_name")
     private String dataTypeName;
 
+    @ToString.Exclude
     @JsonManagedReference(value = "data_list")
     @OneToMany(mappedBy ="dataType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Data> dataList;

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,7 +15,7 @@ public class ProcessingPersonalDataDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     private static class PurposeListItem {
-        private String description;
+        private String purposeDescription;
     }
     @Data
     @AllArgsConstructor
@@ -23,13 +24,13 @@ public class ProcessingPersonalDataDTO {
         private String attributeName;
     }
     private String processingName;
-    private List<PurposeListItem> purposeList;
-    private List<DataListItem> dataList;
+    private List<PurposeListItem> purposes = new ArrayList<>();
+    private List<DataListItem> data = new ArrayList<>();
 
     public void addPurposeDescription(String description) {
-        this.purposeList.add(new PurposeListItem(description));
+        this.purposes.add(new PurposeListItem(description));
     }
     public void addDataAttribute(String description) {
-        this.dataList.add(new DataListItem(description));
+        this.data.add(new DataListItem(description));
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import priam.data.priamdataservice.enums.Category;
 import priam.data.priamdataservice.enums.Source;
 
@@ -17,7 +18,7 @@ import static ch.qos.logback.core.joran.util.beans.BeanUtil.getPropertyName;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@lombok.Data
+@lombok.Data @ToString
 @Table(name = "data")
 public class Data {
 
@@ -46,6 +47,7 @@ public class Data {
     @Transient
     private DataType dataTypeObject;
 
+    @ToString.Exclude
     @JsonBackReference(value = "data_list")
     @ManyToOne
     @JoinColumn(name = "data_type_id")

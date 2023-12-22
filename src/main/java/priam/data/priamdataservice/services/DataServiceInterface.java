@@ -1,6 +1,7 @@
 package priam.data.priamdataservice.services;
 
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.entities.Data;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface DataServiceInterface {
     void setDataAttribute(String attribute, String newValue);
 
     List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory);
-    List<DataResponseDTO> findAllProcessedDataByDataSubjectCategory(int dSCategory, int dataSubjectId);
+    List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId);
 
     DataResponseDTO save(DataRequestDTO dataRequestDTO);
 
