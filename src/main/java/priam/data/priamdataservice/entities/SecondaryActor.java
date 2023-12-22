@@ -1,9 +1,7 @@
 package priam.data.priamdataservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -19,6 +17,7 @@ public class SecondaryActor {
     private String email;
     private String phone;
     private String address;
+    private String country;
     private String safeguard;
     private SafeguardType safeguardType;
     private String username;

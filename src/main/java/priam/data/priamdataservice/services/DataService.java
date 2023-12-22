@@ -1,13 +1,17 @@
 package priam.data.priamdataservice.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.DSCategory;
 import priam.data.priamdataservice.entities.Data;
+import priam.data.priamdataservice.entities.SafeguardType;
+import priam.data.priamdataservice.entities.SecondaryActor;
 import priam.data.priamdataservice.enums.Source;
 import priam.data.priamdataservice.mappers.DataMapper;
 import priam.data.priamdataservice.mappers.DataTypeMapper;
+import priam.data.priamdataservice.mappers.PersonalDataTransferMapper;
 import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
 import priam.data.priamdataservice.openfeign.ProviderRestClient;
 import priam.data.priamdataservice.openfeign.RightRestClient;
@@ -15,6 +19,7 @@ import priam.data.priamdataservice.repositories.DataRepository;
 import priam.data.priamdataservice.repositories.DataTypeRepository;
 import priam.data.priamdataservice.repositories.ProcessedDataRepository;
 import priam.data.priamdataservice.repositories.transfer.PersonalDataTransferRepository;
+import priam.data.priamdataservice.repositories.transfer.SecondaryActorRepository;
 
 import javax.annotation.Generated;
 import javax.transaction.Transactional;
@@ -27,31 +32,21 @@ import java.util.stream.Collectors;
 )
 @Service
 @Transactional
+@AllArgsConstructor
 public class DataService implements DataServiceInterface {
     final DataRepository dataRepository;
     final DataMapper dataMapper;
 
     final DataTypeMapper dataTypeMapper;
+    final PersonalDataTransferMapper transferMapper;
     final DataSubjectRestClient dataSubjectRestClient;
     final RightRestClient rightRestClient;
     final ProviderRestClient providerRestClient;
 
     final DataTypeRepository dataTypeRepository;
     final ProcessedDataRepository processedDataRepository;
+    final SecondaryActorRepository secondaryActorRepository;
     private final PersonalDataTransferRepository personalDataTransferRepository;
-
-    public DataService(DataRepository dataRepository, DataMapper dataMapper, DataTypeMapper dataTypeMapper, DataTypeRepository dataTypeRepository, ProcessedDataRepository processedDataRepository, DataSubjectRestClient dataSubjectRestClient, RightRestClient rightRestClient, ProviderRestClient providerRestClient, PersonalDataTransferRepository personalDataTransferRepository) {
-        this.dataRepository = dataRepository;
-        this.dataMapper = dataMapper;
-        this.dataTypeMapper = dataTypeMapper;
-        this.dataTypeRepository = dataTypeRepository;
-        this.processedDataRepository = processedDataRepository;
-        this.dataSubjectRestClient = dataSubjectRestClient;
-        this.rightRestClient = rightRestClient;
-        this.providerRestClient = providerRestClient;
-        this.personalDataTransferRepository = personalDataTransferRepository;
-    }
-
 
     @Override
     public DataResponseDTO save(DataRequestDTO dataRequestDTO) {
@@ -264,25 +259,25 @@ public class DataService implements DataServiceInterface {
         // Get the list of processed personal data
         List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
 
-        List<SecondaryActorDTO> secondaryActorDTOArrayList = new ArrayList<>();
+        List<SecondaryActor> secondaryActorArrayList = new ArrayList<>();
 
         // Iterate through each processed data
         for (ProcessedPersonalDataDTO processedPersonalDataDTO : processedPersonalDataDTOList) {
             // Iterate through data items within the processed data
+            ArrayList<Integer> dataIds = new ArrayList<>();
             for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
-                int dataId = dataListItem.getDataId();
-
-//                // Query PersonalDataTransfer repository to get secondary actors by dataId
-//                List<SecondaryActorDTO> secondaryActors = personalDataTransferRepository.findSecondaryActorsByDataId(dataId);
-//
-//                // Add fetched secondary actors to the result list, if not already present
-//                for (SecondaryActorDTO secondaryActorDTO : secondaryActors) {
-//                    if (!secondaryActorDTOArrayList.contains(secondaryActorDTO)) {
-//                        secondaryActorDTOArrayList.add(secondaryActorDTO);
-//                    }
-//                }
+                dataIds.add(dataListItem.getDataId());
+            }
+            // Query PersonalDataTransfer repository to get secondary actors by dataId
+            List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataIds(dataIds);
+            // Add fetched secondary actors to the result list, if not already present
+            for (SecondaryActor secondaryActor : secondaryActors) {
+                if (!secondaryActorArrayList.contains(secondaryActor)) {
+                    secondaryActorArrayList.add(secondaryActor);
+                }
             }
         }
-        return secondaryActorDTOArrayList;
+
+        return secondaryActorArrayList.stream().map(dto -> transferMapper.SecondaryActorToSecondaryActorDTO(dto)).toList();
     }
 }

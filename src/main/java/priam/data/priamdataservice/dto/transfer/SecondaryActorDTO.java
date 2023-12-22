@@ -13,11 +13,11 @@ public class SecondaryActorDTO {
     private String email;
     private String phone;
     private String address;
+    private String country;
     private String safeguard;
     private SafeguardType safeguardType;
     private String username;
     private String password;
 
-    private int secondaryActorCategoryId;
-    private String secondaryActorCategoryName;
+    private SecondaryActorCategoryDTO secondaryActorCategoryDTO;
 }
