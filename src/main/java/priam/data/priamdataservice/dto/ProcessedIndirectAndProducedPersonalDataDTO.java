@@ -20,7 +20,7 @@ public class ProcessedIndirectAndProducedPersonalDataDTO {
         private String attributeName;
     }
     private String dataTypeName;
-    private List<DataListItem> data;
+    private List<DataListItem> data = new ArrayList<>();
 
 
     public ProcessedIndirectAndProducedPersonalDataDTO(String dataTypeName) {

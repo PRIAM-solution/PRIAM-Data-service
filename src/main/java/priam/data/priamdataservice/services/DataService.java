@@ -234,7 +234,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // Get indirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> !d.getSource().equals(Source.Direct)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Indirect) || d.getSource().equals(Source.Produced)).toList());
 
         nondirectDatas.forEach(data -> {
             // Construct each dataType
