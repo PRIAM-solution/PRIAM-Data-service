@@ -19,5 +19,5 @@ public class SecondaryActorDTO {
     private String username;
     private String password;
 
-    private SecondaryActorCategoryDTO secondaryActorCategoryDTO;
+    private SecondaryActorCategoryDTO secondaryActorCategory;
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import priam.data.priamdataservice.dto.IsAcceptedDTO;
 
-@FeignClient(name = "DATA-REQUEST-SERVICE")
+@FeignClient(name = "RIGHT-SERVICE")
 public interface RightRestClient {
     @PostMapping(path = "api/isAccepted")
     public boolean getIfDataAccessAccepted(@RequestBody IsAcceptedDTO isAcceptedDTO);

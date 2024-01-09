@@ -6,13 +6,12 @@ import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.DSCategory;
 import priam.data.priamdataservice.entities.Data;
-import priam.data.priamdataservice.entities.SafeguardType;
 import priam.data.priamdataservice.entities.SecondaryActor;
 import priam.data.priamdataservice.enums.Source;
 import priam.data.priamdataservice.mappers.DataMapper;
 import priam.data.priamdataservice.mappers.DataTypeMapper;
 import priam.data.priamdataservice.mappers.PersonalDataTransferMapper;
-import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
+import priam.data.priamdataservice.openfeign.ActorRestClient;
 import priam.data.priamdataservice.openfeign.ProviderRestClient;
 import priam.data.priamdataservice.openfeign.RightRestClient;
 import priam.data.priamdataservice.repositories.DataRepository;
@@ -39,7 +38,7 @@ public class DataService implements DataServiceInterface {
 
     final DataTypeMapper dataTypeMapper;
     final PersonalDataTransferMapper transferMapper;
-    final DataSubjectRestClient dataSubjectRestClient;
+    final ActorRestClient actorRestClient;
     final RightRestClient rightRestClient;
     final ProviderRestClient providerRestClient;
 
@@ -64,7 +63,7 @@ public class DataService implements DataServiceInterface {
     @Override
     public DataResponseDTO getData(int id) {
         Data data = dataRepository.findById(id).get();
-        DSCategory dsCategory = dataSubjectRestClient.getDSCategoryById(data.getDscId());
+        DSCategory dsCategory = actorRestClient.getDSCategoryById(data.getDscId());
         data.setDsCategory(dsCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
 
@@ -74,7 +73,7 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllPersonalData() {
         List<Data> dataList = dataRepository.findAllByIsPersonal(true);
         for (Data datum: dataList){
-            DSCategory dsCategory = dataSubjectRestClient.getDSCategoryById(datum.getDscId());
+            DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
             datum.setDsCategory(dsCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList
@@ -87,7 +86,7 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllData() {
         List<Data> dataList = dataRepository.findAll();
         for (Data datum: dataList){
-            DSCategory dsCategory = dataSubjectRestClient.getDSCategoryById(datum.getDscId());
+            DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
             datum.setDsCategory(dsCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList
@@ -152,7 +151,7 @@ public class DataService implements DataServiceInterface {
     @Override
     public List<ProcessedPersonalDataDTO> getProcessedPersonalDataList(String idRef) {
         ArrayList<ProcessedPersonalDataDTO> response = new ArrayList<>();
-        DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
+        DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
         int dSCategory = dataSubject.getDscId();
         int dataSubjectId = dataSubject.getId();
 
@@ -228,7 +227,7 @@ public class DataService implements DataServiceInterface {
     @Override
     public List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef) {
         ArrayList<ProcessedIndirectAndProducedPersonalDataDTO> response = new ArrayList<>();
-        DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
+        DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
         int dSCategory = dataSubject.getDscId();
         int dataSubjectId = dataSubject.getId();
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));

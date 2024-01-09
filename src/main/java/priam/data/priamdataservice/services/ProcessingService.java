@@ -2,11 +2,10 @@ package priam.data.priamdataservice.services;
 
 import org.springframework.stereotype.Service;
 import priam.data.priamdataservice.dto.*;
-import priam.data.priamdataservice.entities.Data;
 import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.entities.Processing;
 import priam.data.priamdataservice.mappers.ProcessingMapper;
-import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
+import priam.data.priamdataservice.openfeign.ActorRestClient;
 import priam.data.priamdataservice.repositories.DataUsageRepository;
 import priam.data.priamdataservice.repositories.ProcessingRepository;
 
@@ -27,15 +26,15 @@ public class ProcessingService implements ProcessingServiceInterface  {
     private DataService dataService;
     private ProcessingRepository processingRepository;
     private DataUsageRepository dataUsageRepository;
-    private DataSubjectRestClient dataSubjectRestClient;
+    private ActorRestClient actorRestClient;
 
-    public ProcessingService(ProcessingMapper processingMapper, DataUsageService dataUsageService, DataService dataService, ProcessingRepository processingRepository, DataUsageRepository dataUsageRepository, DataSubjectRestClient dataSubjectRestClient) {
+    public ProcessingService(ProcessingMapper processingMapper, DataUsageService dataUsageService, DataService dataService, ProcessingRepository processingRepository, DataUsageRepository dataUsageRepository, ActorRestClient actorRestClient) {
         this.processingMapper = processingMapper;
         this.dataUsageService = dataUsageService;
         this.dataService = dataService;
         this.processingRepository = processingRepository;
         this.dataUsageRepository = dataUsageRepository;
-        this.dataSubjectRestClient = dataSubjectRestClient;
+        this.actorRestClient = actorRestClient;
     }
 
     @Override
@@ -119,7 +118,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
     @Override
     public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef) {
         // Retrieve the DataSubject to have its category
-        DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
+        DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
 
         // Retrieve associated processings and datas
         Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDscId());
