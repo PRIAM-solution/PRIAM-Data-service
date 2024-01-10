@@ -27,4 +27,10 @@ public class DataTypeService implements DataTypeServiceInterface {
         DataType saveData = dataTypeRepository.save(dataType);
         return dataTypeMapper.DataTypeToDataTypeResponseDTO(saveData);
     }
+
+    @Override
+    public String getDataTypeNameByDataTypeId(int dataTypeId) {
+        DataType dataType = dataTypeRepository.getById(dataTypeId);
+        return dataType.getDataTypeName();
+    }
 }
