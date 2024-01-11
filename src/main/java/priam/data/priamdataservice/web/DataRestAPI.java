@@ -2,6 +2,8 @@ package priam.data.priamdataservice.web;
 
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
+import priam.data.priamdataservice.dto.transfer.DataTransferDTO;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.services.DataServiceInterface;
 import priam.data.priamdataservice.services.DataTypeServiceInterface;
@@ -81,12 +83,13 @@ public class DataRestAPI {
     }
 
     /**
-     * Get the list of secondary actors for whom the processed data is transferred.
+     * Get the list of secondary actors for whom the processed data is transferred,
+     * and the list of processed data transferred to them.
      * @param idRef the ID of the user
      * @return the list of secondary actors
      **/
     @GetMapping(path = "/data/processedPersonalDataList/transfer/{idRef}")
-    public List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
+    public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(@PathVariable String idRef) {
         return dataService.getProcessedPersonalDataListTransfer(idRef);
     }
 }

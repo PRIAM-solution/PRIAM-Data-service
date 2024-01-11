@@ -3,6 +3,8 @@ package priam.data.priamdataservice.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
+import priam.data.priamdataservice.dto.transfer.SecondaryActorCategoryDTO;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.DSCategory;
 import priam.data.priamdataservice.entities.Data;
@@ -60,6 +62,7 @@ public class DataService implements DataServiceInterface {
         Data updatedData = dataRepository.save(data);
         return dataMapper.DataToDataResponseDTO(updatedData);
     }
+
     @Override
     public DataResponseDTO getData(int id) {
         Data data = dataRepository.findById(id).get();
@@ -69,10 +72,11 @@ public class DataService implements DataServiceInterface {
 
         return dataResponseDTO;
     }
+
     @Override
     public List<DataResponseDTO> findAllPersonalData() {
         List<Data> dataList = dataRepository.findAllByIsPersonal(true);
-        for (Data datum: dataList){
+        for (Data datum : dataList) {
             DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
             datum.setDsCategory(dsCategory);
         }
@@ -85,7 +89,7 @@ public class DataService implements DataServiceInterface {
     @Override
     public List<DataResponseDTO> findAllData() {
         List<Data> dataList = dataRepository.findAll();
-        for (Data datum: dataList){
+        for (Data datum : dataList) {
             DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
             datum.setDsCategory(dsCategory);
         }
@@ -114,6 +118,7 @@ public class DataService implements DataServiceInterface {
         d.setAttribute(newValue);
 
     }
+
     @Override
     public List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory) {
         List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
@@ -123,6 +128,7 @@ public class DataService implements DataServiceInterface {
                 .collect(Collectors.toList());
         return personalData;
     }
+
     @Override
     public List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId) {
         List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
@@ -137,12 +143,12 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> getPersonalDataByDataTypeName(String dataTypeName) {
         List<DataResponseDTO> dataListByDataType = new LinkedList<>();
         List<DataResponseDTO> dataList = findAllPersonalData();
-        for (DataResponseDTO datum: dataList){
-            if(datum.getData_type_name().equals(dataTypeName))
+        for (DataResponseDTO datum : dataList) {
+            if (datum.getData_type_name().equals(dataTypeName))
                 dataListByDataType.add(datum);
-                 System.out.println(datum.getData_type_name());
+            System.out.println(datum.getData_type_name());
         }
-        for (DataResponseDTO datum: dataListByDataType){
+        for (DataResponseDTO datum : dataListByDataType) {
             System.out.println(datum.getData_type_name());
         }
         return dataListByDataType;
@@ -164,10 +170,9 @@ public class DataService implements DataServiceInterface {
             // Construct each dataType
             Optional<ProcessedPersonalDataDTO> processedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
             ProcessedPersonalDataDTO dataType = null;
-            if(processedPersonalDataDTO.isPresent()) {
+            if (processedPersonalDataDTO.isPresent()) {
                 dataType = processedPersonalDataDTO.get();
-            }
-            else {
+            } else {
                 dataType = new ProcessedPersonalDataDTO(data.getDataType().getDataTypeName());
                 response.add(dataType);
             }
@@ -177,13 +182,13 @@ public class DataService implements DataServiceInterface {
             ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
             ArrayList<String> values = new ArrayList<>();
             valuesResponse.forEach(valueMap -> {
-                if(valueMap.get("attribute").equals(data.getAttribute()))
+                if (valueMap.get("attribute").equals(data.getAttribute()))
                     values.add(valueMap.get("value"));
             });
             dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
             // If the data was a primaryKey of the DataType, we add it to the primaryKey list
-            if(data.isPrimaryKey()) {
+            if (data.isPrimaryKey()) {
                 dataType.addPrimaryKey(data.getAttribute());
             }
         });
@@ -193,14 +198,13 @@ public class DataService implements DataServiceInterface {
         nondirectDatas.forEach(data -> {
             // We have to verify if provider accepted to give this data
             boolean isAccepted = rightRestClient.getIfDataAccessAccepted(new IsAcceptedDTO(dataSubjectId, data.getId()));
-            if(isAccepted) {
+            if (isAccepted) {
                 // Construct each dataType
                 Optional<ProcessedPersonalDataDTO> processedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
                 ProcessedPersonalDataDTO dataType = null;
-                if(processedPersonalDataDTO.isPresent()) {
+                if (processedPersonalDataDTO.isPresent()) {
                     dataType = processedPersonalDataDTO.get();
-                }
-                else {
+                } else {
                     dataType = new ProcessedPersonalDataDTO(data.getDataType().getDataTypeName());
                     response.add(dataType);
                 }
@@ -210,13 +214,13 @@ public class DataService implements DataServiceInterface {
                 ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
                 ArrayList<String> values = new ArrayList<>();
                 valuesResponse.forEach(valueMap -> {
-                    if(valueMap.get("attribute").equals(data.getAttribute()))
+                    if (valueMap.get("attribute").equals(data.getAttribute()))
                         values.add(valueMap.get("value"));
                 });
                 dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
                 // If the data was a primaryKey of the DataType, we add it to the primaryKey list
-                if(data.isPrimaryKey()) {
+                if (data.isPrimaryKey()) {
                     dataType.addPrimaryKey(data.getAttribute());
                 }
             }
@@ -239,10 +243,9 @@ public class DataService implements DataServiceInterface {
             // Construct each dataType
             Optional<ProcessedIndirectAndProducedPersonalDataDTO> processedIndirectAndProducedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
             ProcessedIndirectAndProducedPersonalDataDTO dataType = null;
-            if(processedIndirectAndProducedPersonalDataDTO.isPresent()) {
+            if (processedIndirectAndProducedPersonalDataDTO.isPresent()) {
                 dataType = processedIndirectAndProducedPersonalDataDTO.get();
-            }
-            else {
+            } else {
                 dataType = new ProcessedIndirectAndProducedPersonalDataDTO(data.getDataType().getDataTypeName());
                 response.add(dataType);
             }
@@ -253,30 +256,102 @@ public class DataService implements DataServiceInterface {
         return response;
     }
 
+//    @Override
+//    public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef) {
+//        // Get the list of processed personal data
+//        List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
+//
+//        List<SecondaryActor> secondaryActorArrayList = new ArrayList<>();
+//
+//        // Iterate through each processed data
+//        for (ProcessedPersonalDataDTO processedPersonalDataDTO : processedPersonalDataDTOList) {
+//            // Iterate through data items within the processed data
+//            ArrayList<Integer> dataIds = new ArrayList<>();
+//            for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
+//                dataIds.add(dataListItem.getDataId());
+//            }
+//            // Query PersonalDataTransfer repository to get secondary actors by dataId
+//            List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataIds(dataIds);
+//            // Add fetched secondary actors to the result list, if not already present
+//            for (SecondaryActor secondaryActor : secondaryActors) {
+//                if (!secondaryActorArrayList.contains(secondaryActor)) {
+//                    secondaryActorArrayList.add(secondaryActor);
+//                }
+//            }
+//        }
+//
+//        return secondaryActorArrayList.stream().map(dto -> transferMapper.SecondaryActorToSecondaryActorDTO(dto)).toList();
+//    }
+
+    /**
+     * Retrieves a list of DataListTransferDTO objects based on the specified reference ID.
+     * For each processed personal data associated with the reference ID, fetches secondary actors
+     * and constructs DataListTransferDTO objects containing the secondary actors and their
+     * corresponding processed personal data.
+     *
+     * @param idRef The reference ID used to retrieve processed personal data.
+     * @return A list of DataListTransferDTO objects containing secondary actors and their
+     *         associated processed personal data.
+     */
     @Override
-    public List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(String idRef) {
+    public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef) {
         // Get the list of processed personal data
         List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
+        System.out.println("[1] ProcessedPersonalDataDTOList: " + processedPersonalDataDTOList);
 
-        List<SecondaryActor> secondaryActorArrayList = new ArrayList<>();
-
+        List<DataListTransferDTO> dataListTransferDTOList = new ArrayList<>();
+        Map<Integer, List<SecondaryActor>> secondaryActorMap = new HashMap<>();
         // Iterate through each processed data
         for (ProcessedPersonalDataDTO processedPersonalDataDTO : processedPersonalDataDTOList) {
-            // Iterate through data items within the processed data
-            ArrayList<Integer> dataIds = new ArrayList<>();
+            // Fetch secondary actors for each data item in processed data
             for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
-                dataIds.add(dataListItem.getDataId());
+                int dataId = dataListItem.getDataId();
+                List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataId(dataId);
+                secondaryActorMap.put(dataId, secondaryActors);
             }
-            // Query PersonalDataTransfer repository to get secondary actors by dataId
-            List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataIds(dataIds);
-            // Add fetched secondary actors to the result list, if not already present
+            System.out.println("[2] SecondaryActorMap: " + secondaryActorMap);
+        }
+
+        for (Integer dataId : secondaryActorMap.keySet()) {
+            List<SecondaryActor> secondaryActors = secondaryActorMap.get(dataId);
+            System.out.println("[3] SecondaryActors: " + secondaryActors);
             for (SecondaryActor secondaryActor : secondaryActors) {
-                if (!secondaryActorArrayList.contains(secondaryActor)) {
-                    secondaryActorArrayList.add(secondaryActor);
+                System.out.println("[4] SecondaryActor: " + secondaryActor);
+                if (!dataListTransferDTOList.contains(secondaryActor)) {
+                    // Construct each dataListTransferDTO and add it to the list
+                    DataListTransferDTO dataListTransferDTO = new DataListTransferDTO(
+                            secondaryActor.getId(),
+                            secondaryActor.getName(),
+                            secondaryActor.getEmail(),
+                            secondaryActor.getPhone(),
+                            secondaryActor.getAddress(),
+                            secondaryActor.getCountry(),
+                            secondaryActor.getSafeguard(),
+                            secondaryActor.getSafeguardType(),
+                            secondaryActor.getUsername(),
+                            secondaryActor.getPassword(),
+                            new SecondaryActorCategoryDTO(
+                                    secondaryActor.getSecondaryActorCategory().getSecondaryActorCategoryId(),
+                                    secondaryActor.getSecondaryActorCategory().getSecondaryActorCategoryName()),
+                            new ProcessedPersonalDataDTO() // Set dataTransfers accordingly
+                    );
+                    // Retrieve the ProcessedPersonalDataDTO of the processedPersonalDataDTOList with the dataId
+                    ProcessedPersonalDataDTO matchingProcessedData = processedPersonalDataDTOList.stream()
+                            .filter(data -> data.getData().stream().anyMatch(item -> item.getDataId() == dataId))
+                            .findFirst()
+                            .orElse(null);
+                    System.out.println("[5] matchingProcessedData: " + matchingProcessedData);
+
+                    if (matchingProcessedData != null) {
+                        dataListTransferDTO.setDataTransfers(matchingProcessedData);
+                        System.out.println("[6] dataTransfersAdded?: " + dataListTransferDTO.getDataTransfers());
+                        dataListTransferDTOList.add(dataListTransferDTO);
+                        System.out.println("[7] DataListTransferDTO: " + dataListTransferDTOList);
+                    }
                 }
             }
         }
-
-        return secondaryActorArrayList.stream().map(dto -> transferMapper.SecondaryActorToSecondaryActorDTO(dto)).toList();
+        System.out.println("[8] DataListTransferDTOList: " + dataListTransferDTOList);
+        return dataListTransferDTOList;
     }
 }

@@ -1,6 +1,7 @@
 package priam.data.priamdataservice.services;
 
 import priam.data.priamdataservice.dto.*;
+import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.Data;
 
@@ -33,5 +34,5 @@ public interface DataServiceInterface {
 
     List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef);
 
-    List<SecondaryActorDTO> getProcessedPersonalDataListTransfer(String idRef);
+    List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef);
 }
