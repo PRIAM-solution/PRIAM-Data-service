@@ -31,6 +31,8 @@ public class DataRestAPI {
     public DataResponseDTO save(@RequestBody DataRequestDTO dataRequestDTO) { return this.dataService.save(dataRequestDTO); }
     @PostMapping(path = "/datatype")
     public DataTypeResponseDTO save(@RequestBody DataTypeRequestDTO dataTypeRequestDTO) { return this.dataTypeService.save(dataTypeRequestDTO); }
+    @GetMapping(path = "/datatype/data/{dataTypeId}")
+    public String getDataTypeNameByDataTypeId(@PathVariable int dataTypeId) { return this.dataTypeService.getDataTypeNameByDataTypeId(dataTypeId); }
 
     @GetMapping(path = "/dataId/{attribute}")
     public int getIdByName(@PathVariable String attribute) {

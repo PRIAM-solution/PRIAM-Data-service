@@ -197,8 +197,8 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Indirect) || d.getSource().equals(Source.Produced)).toList());
         nondirectDatas.forEach(data -> {
             // We have to verify if provider accepted to give this data
-            boolean isAccepted = rightRestClient.getIfDataAccessAccepted(new IsAcceptedDTO(dataSubjectId, data.getId()));
-            if (isAccepted) {
+            boolean isAccepted = rightRestClient.getIfDataAccessAccepted(dataSubjectId, data.getId());
+            if(isAccepted) {
                 // Construct each dataType
                 Optional<ProcessedPersonalDataDTO> processedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
                 ProcessedPersonalDataDTO dataType = null;
@@ -255,33 +255,6 @@ public class DataService implements DataServiceInterface {
 
         return response;
     }
-
-//    @Override
-//    public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef) {
-//        // Get the list of processed personal data
-//        List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
-//
-//        List<SecondaryActor> secondaryActorArrayList = new ArrayList<>();
-//
-//        // Iterate through each processed data
-//        for (ProcessedPersonalDataDTO processedPersonalDataDTO : processedPersonalDataDTOList) {
-//            // Iterate through data items within the processed data
-//            ArrayList<Integer> dataIds = new ArrayList<>();
-//            for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
-//                dataIds.add(dataListItem.getDataId());
-//            }
-//            // Query PersonalDataTransfer repository to get secondary actors by dataId
-//            List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataIds(dataIds);
-//            // Add fetched secondary actors to the result list, if not already present
-//            for (SecondaryActor secondaryActor : secondaryActors) {
-//                if (!secondaryActorArrayList.contains(secondaryActor)) {
-//                    secondaryActorArrayList.add(secondaryActor);
-//                }
-//            }
-//        }
-//
-//        return secondaryActorArrayList.stream().map(dto -> transferMapper.SecondaryActorToSecondaryActorDTO(dto)).toList();
-//    }
 
     /**
      * Retrieves a list of DataListTransferDTO objects based on the specified reference ID.

@@ -5,4 +5,6 @@ import priam.data.priamdataservice.dto.DataTypeResponseDTO;
 
 public interface DataTypeServiceInterface {
     DataTypeResponseDTO save(DataTypeRequestDTO dataTypeRequestDTO);
+
+    String getDataTypeNameByDataTypeId(int dataTypeId);
 }
