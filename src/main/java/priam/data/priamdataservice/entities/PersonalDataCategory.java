@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "PersonalDataCategory")
 public class PersonalDataCategory {
     @Id
-    private int pdCategoryId;
+    private int personalDataCategoryId;
     @Column
-    private String pdCategoryName;
+    private String personalDataCategoryName;
 }

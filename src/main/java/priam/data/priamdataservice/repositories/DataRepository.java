@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface DataRepository extends JpaRepository<Data, Integer> {
     Optional<Data> findByDataId(int dataId);
-    int getIdByAttributeName(String attribute);
-    Data findByAttributeName(String attribute);
+    int getIdByDataName(String dataName);
+    Data findByDataName(String dataName);
 
     List<Data> findAllByDscId(int dSCategory);
     List<Data> findAllByIsPersonal(boolean isPersonal);

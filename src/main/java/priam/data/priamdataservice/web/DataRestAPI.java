@@ -3,8 +3,6 @@ package priam.data.priamdataservice.web;
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
-import priam.data.priamdataservice.dto.transfer.DataTransferDTO;
-import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.services.DataServiceInterface;
 import priam.data.priamdataservice.services.DataTypeServiceInterface;
 import priam.data.priamdataservice.services.ProcessingServiceInterface;
@@ -34,14 +32,14 @@ public class DataRestAPI {
     @GetMapping(path = "/datatype/data/{dataTypeId}")
     public String getDataTypeNameByDataTypeId(@PathVariable int dataTypeId) { return this.dataTypeService.getDataTypeNameByDataTypeId(dataTypeId); }
 
-    @GetMapping(path = "/dataId/{attribute}")
-    public int getIdByName(@PathVariable String attribute) {
-        return dataService.getIdByAttribute(attribute);
+    @GetMapping(path = "/dataId/{dataName}")
+    public int getIdByName(@PathVariable String dataName) {
+        return dataService.getIdByDataName(dataName);
     }
 
-    @GetMapping(path = "/getAttribute/{id}")
-    public String getAttributeName(@PathVariable int id) {
-        return dataService.getAttributeById(id);
+    @GetMapping(path = "/getDataName/{id}")
+    public String getDataName(@PathVariable int id) {
+        return dataService.getDataNameById(id);
     }
 
     @GetMapping(path = "/personalDataList")

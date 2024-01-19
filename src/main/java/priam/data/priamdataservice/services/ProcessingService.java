@@ -131,7 +131,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
             });
             // Datas
             processing.getDataUsages().forEach(dataUsage -> {
-                p.addDataAttribute(dataService.getAttributeById(dataUsage.getDataId()));
+                p.addDataName(dataService.getDataNameById(dataUsage.getDataId()));
             });
 
             response.add(p);

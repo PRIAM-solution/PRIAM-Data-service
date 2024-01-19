@@ -2,7 +2,6 @@ package priam.data.priamdataservice.services;
 
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
-import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.Data;
 
 import java.util.List;
@@ -15,11 +14,9 @@ public interface DataServiceInterface {
 
     List<DataResponseDTO> findAllData();
 
-    int getIdByAttribute(String attribute);
+    int getIdByDataName(String dataName);
 
-    String getAttributeById(int id);
-
-    void setDataAttribute(String attribute, String newValue);
+    String getDataNameById(int id);
 
     List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory);
     List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId);

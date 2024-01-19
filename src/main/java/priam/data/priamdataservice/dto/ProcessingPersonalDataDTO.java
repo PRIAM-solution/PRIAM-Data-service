@@ -21,7 +21,7 @@ public class ProcessingPersonalDataDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     private static class DataListItem {
-        private String attributeName;
+        private String dataName;
     }
     private String processingName;
     private List<PurposeListItem> purposes = new ArrayList<>();
@@ -30,7 +30,7 @@ public class ProcessingPersonalDataDTO {
     public void addPurposeDescription(String description) {
         this.purposes.add(new PurposeListItem(description));
     }
-    public void addDataAttribute(String description) {
-        this.data.add(new DataListItem(description));
+    public void addDataName(String dataName) {
+        this.data.add(new DataListItem(dataName));
     }
 }

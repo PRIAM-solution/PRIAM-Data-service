@@ -1,11 +1,9 @@
 package priam.data.priamdataservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -27,8 +25,6 @@ public class DataType {
 
     @ToString.Exclude
     @JsonManagedReference(value = "data_list")
-    @OneToMany(mappedBy ="dataType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dataType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Data> dataList;
-
-    //private int dataId;
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorCategoryDTO;
-import priam.data.priamdataservice.entities.DSCategory;
+import priam.data.priamdataservice.entities.DataSubjectCategory;
 import priam.data.priamdataservice.entities.Data;
 import priam.data.priamdataservice.entities.SecondaryActor;
 import priam.data.priamdataservice.enums.Source;
@@ -65,8 +65,8 @@ public class DataService implements DataServiceInterface {
     @Override
     public DataResponseDTO getData(int id) {
         Data data = dataRepository.findByDataId(id).get();
-        DSCategory dsCategory = actorRestClient.getDSCategoryById(data.getDscId());
-        data.setDsCategory(dsCategory);
+        DataSubjectCategory dsCategory = actorRestClient.getDSCategoryById(data.getDataSubjectCategory().getDataSubjectCategoryId());
+        data.setDataSubjectCategory(dsCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
 
         return dataResponseDTO;
@@ -76,8 +76,8 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllPersonalData() {
         List<Data> dataList = dataRepository.findAllByIsPersonal(true);
         for (Data datum : dataList) {
-            DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
-            datum.setDsCategory(dsCategory);
+            DataSubjectCategory dataSubjectCategory = actorRestClient.getDSCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
+            datum.setDataSubjectCategory(dataSubjectCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList
                 .stream().map(datum -> dataMapper.DataToDataResponseDTO(datum))
@@ -89,8 +89,8 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllData() {
         List<Data> dataList = dataRepository.findAll();
         for (Data datum : dataList) {
-            DSCategory dsCategory = actorRestClient.getDSCategoryById(datum.getDscId());
-            datum.setDsCategory(dsCategory);
+            DataSubjectCategory dataSubjectCategory = actorRestClient.getDSCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
+            datum.setDataSubjectCategory(dataSubjectCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList
                 .stream().map(datum -> dataMapper.DataToDataResponseDTO(datum))
@@ -99,23 +99,15 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public int getIdByAttribute(String attribute) {
-        Data d = dataRepository.findByAttributeName(attribute);
+    public int getIdByDataName(String dataName) {
+        Data d = dataRepository.findByDataName(dataName);
         return d.getDataId();
     }
 
     @Override
-    public String getAttributeById(int id) {
+    public String getDataNameById(int id) {
         Data d = dataRepository.findByDataId(id).get();
-        return d.getAttributeName();
-    }
-
-    @Override
-    public void setDataAttribute(String attribute, String newValue) {
-        Data d = new Data();
-        d = dataRepository.findByDataId(1).get();
-        d.setAttributeName(newValue);
-
+        return d.getDataName();
     }
 
     @Override
@@ -176,19 +168,19 @@ public class DataService implements DataServiceInterface {
                 response.add(dataType);
             }
             // Get data values
-            ArrayList<String> attributesNames = new ArrayList<>();
-            attributesNames.add(data.getAttributeName());
-            ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
+            ArrayList<String> datasNames = new ArrayList<>();
+            datasNames.add(data.getDataName());
+            ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), datasNames));
             ArrayList<String> values = new ArrayList<>();
             valuesResponse.forEach(valueMap -> {
-                if (valueMap.get("attribute").equals(data.getAttributeName()))
+                if (valueMap.get("dataName").equals(data.getDataName()))
                     values.add(valueMap.get("value"));
             });
-            dataType.addData(data.getDataId(), data.getAttributeName(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
+            dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName());
 
             // If the data was a primaryKey of the DataType, we add it to the primaryKey list
             if (data.isPrimaryKey()) {
-                dataType.addPrimaryKey(data.getAttributeName());
+                dataType.addPrimaryKey(data.getDataName());
             }
         });
 
@@ -208,19 +200,19 @@ public class DataService implements DataServiceInterface {
                     response.add(dataType);
                 }
                 // Get data values
-                ArrayList<String> attributesNames = new ArrayList<>();
-                attributesNames.add(data.getAttributeName());
-                ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
+                ArrayList<String> datasNames = new ArrayList<>();
+                datasNames.add(data.getDataName());
+                ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), datasNames));
                 ArrayList<String> values = new ArrayList<>();
                 valuesResponse.forEach(valueMap -> {
-                    if (valueMap.get("attribute").equals(data.getAttributeName()))
+                    if (valueMap.get("dataName").equals(data.getDataName()))
                         values.add(valueMap.get("value"));
                 });
-                dataType.addData(data.getDataId(), data.getAttributeName(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
+                dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName());
 
                 // If the data was a primaryKey of the DataType, we add it to the primaryKey list
                 if (data.isPrimaryKey()) {
-                    dataType.addPrimaryKey(data.getAttributeName());
+                    dataType.addPrimaryKey(data.getDataName());
                 }
             }
         });
@@ -249,7 +241,7 @@ public class DataService implements DataServiceInterface {
                 response.add(dataType);
             }
 
-            dataType.addData(data.getDataId(), data.getAttributeName());
+            dataType.addData(data.getDataId(), data.getDataName());
         });
 
         return response;

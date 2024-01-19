@@ -3,7 +3,7 @@ package priam.data.priamdataservice.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import priam.data.priamdataservice.entities.DSCategory;
+import priam.data.priamdataservice.entities.DataSubjectCategory;
 import priam.data.priamdataservice.entities.PersonalDataCategory;
 import priam.data.priamdataservice.enums.Category;
 import priam.data.priamdataservice.enums.Source;
@@ -12,7 +12,7 @@ import priam.data.priamdataservice.enums.Source;
 @NoArgsConstructor
 public class DataResponseDTO {
     private int dataId;
-    private String attributeName;
+    private String dataName;
     private boolean isPersonal;
     private Category category;
     private Source source;
@@ -21,6 +21,6 @@ public class DataResponseDTO {
     private int data_type_id;
     private String data_type_name;
     private boolean isPrimaryKey;
-    private DSCategory dsCategory;
+    private DataSubjectCategory dataSubjectCategory;
     private PersonalDataCategory personalDataCategory;
 }

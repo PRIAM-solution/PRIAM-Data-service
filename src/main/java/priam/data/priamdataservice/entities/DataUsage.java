@@ -8,7 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "gdpr_Datausage")
+@Table(name = "DataUsage")
 @lombok.Data @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class DataUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private boolean personalStatus;
 
@@ -33,7 +33,7 @@ public class DataUsage {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Processing processing;
     private int dataId;
+
     @Transient
     private Data data;
-
 }
