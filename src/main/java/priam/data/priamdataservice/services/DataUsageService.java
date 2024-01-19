@@ -57,7 +57,7 @@ public class DataUsageService implements DataUsageServiceInterface {
     @Override
     public DataUsageResponseDTO getDataUsage(Long dataUsageId) {
         DataUsage dataUsage = dataUsageRepository.findById(dataUsageId).get();
-        Data data = dataRepository.findById(dataUsage.getDataId()).get();
+        Data data = dataRepository.findByDataId(dataUsage.getDataId()).get();
         dataUsage.setData(data);
         return dataUsageMapper.fromDataUsage(dataUsage);/*.orElseThrow();*/
     }
@@ -67,7 +67,7 @@ public class DataUsageService implements DataUsageServiceInterface {
         //Collection<DataUsage> datausages = dataUsageRepository.findAll();
         Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessingId(processingId);
         for (DataUsage d: datausages){
-            Data data = dataRepository.findById(d.getDataId()).get();
+            Data data = dataRepository.findByDataId(d.getDataId()).get();
             d.setData(data);
         }
         return datausages;

@@ -58,7 +58,7 @@ public class TransferService implements TransferServiceInterface {
     public void createDataTransfer(DataTransferDTO dataTransferDTO) {
         PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByTransferId(dataTransferDTO.getTransferId());
         ArrayList<Data> list = new ArrayList<>(transfer.getData());
-        Data data = dataRepository.findById(dataTransferDTO.getDataId()).get();
+        Data data = dataRepository.findByDataId(dataTransferDTO.getDataId()).get();
         list.add(data);
         transfer.setData(list);
         transferRepository.save(transfer);

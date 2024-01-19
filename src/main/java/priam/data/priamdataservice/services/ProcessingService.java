@@ -96,14 +96,12 @@ public class ProcessingService implements ProcessingServiceInterface  {
 
         ArrayList<DataResponseDTO> dataList = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dscId));
         for (DataResponseDTO data: dataList) {
-            personalDataId.add(data.getId());
+            personalDataId.add(data.getDataId());
         }
 
         for (Processing processing: processings) {
             int cpt = 0;
             for (DataUsage dataUsage: processing.getDataUsages()) {
-                System.out.println("donnée personnelles "+ dataUsage.getProcessing().getId() );
-                System.out.println("donnée personnelles du processing "+ dataUsage.getDataId() );
                 if (personalDataId.contains(dataUsage.getDataId())) {
                     cpt ++;
                     break;
@@ -122,6 +120,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
 
         // Retrieve associated processings and datas
         Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDscId());
+
         ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
         for (ProcessingResponseDTO processing: processings) {
             ProcessingPersonalDataDTO p = new ProcessingPersonalDataDTO();

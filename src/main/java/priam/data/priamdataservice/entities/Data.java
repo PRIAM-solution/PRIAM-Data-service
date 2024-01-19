@@ -1,8 +1,6 @@
 package priam.data.priamdataservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,10 +8,6 @@ import priam.data.priamdataservice.enums.Category;
 import priam.data.priamdataservice.enums.Source;
 
 import javax.persistence.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static ch.qos.logback.core.joran.util.beans.BeanUtil.getPropertyName;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,9 +18,9 @@ public class Data {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int dataId;
     @Column
-    private String attribute;
+    private String attributeName;
     @Column
     private boolean isPersonal;
 

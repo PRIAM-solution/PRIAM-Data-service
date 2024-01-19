@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
 import priam.data.priamdataservice.dto.transfer.SecondaryActorCategoryDTO;
-import priam.data.priamdataservice.dto.transfer.SecondaryActorDTO;
 import priam.data.priamdataservice.entities.DSCategory;
 import priam.data.priamdataservice.entities.Data;
 import priam.data.priamdataservice.entities.SecondaryActor;
@@ -65,7 +64,7 @@ public class DataService implements DataServiceInterface {
 
     @Override
     public DataResponseDTO getData(int id) {
-        Data data = dataRepository.findById(id).get();
+        Data data = dataRepository.findByDataId(id).get();
         DSCategory dsCategory = actorRestClient.getDSCategoryById(data.getDscId());
         data.setDsCategory(dsCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
@@ -101,21 +100,21 @@ public class DataService implements DataServiceInterface {
 
     @Override
     public int getIdByAttribute(String attribute) {
-        Data d = dataRepository.findByAttribute(attribute);
-        return d.getId();
+        Data d = dataRepository.findByAttributeName(attribute);
+        return d.getDataId();
     }
 
     @Override
     public String getAttributeById(int id) {
-        Data d = dataRepository.findById(id).get();
-        return d.getAttribute();
+        Data d = dataRepository.findByDataId(id).get();
+        return d.getAttributeName();
     }
 
     @Override
     public void setDataAttribute(String attribute, String newValue) {
         Data d = new Data();
-        d = dataRepository.findById(1).get();
-        d.setAttribute(newValue);
+        d = dataRepository.findByDataId(1).get();
+        d.setAttributeName(newValue);
 
     }
 
@@ -134,7 +133,7 @@ public class DataService implements DataServiceInterface {
         List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
         List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
         List<Data> personalData = dataList.stream()
-                .filter(dto -> dto.isPersonal() && processedDataIds.contains(dto.getId()))
+                .filter(dto -> dto.isPersonal() && processedDataIds.contains(dto.getDataId()))
                 .collect(Collectors.toList());
         return personalData;
     }
@@ -178,18 +177,18 @@ public class DataService implements DataServiceInterface {
             }
             // Get data values
             ArrayList<String> attributesNames = new ArrayList<>();
-            attributesNames.add(data.getAttribute());
+            attributesNames.add(data.getAttributeName());
             ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
             ArrayList<String> values = new ArrayList<>();
             valuesResponse.forEach(valueMap -> {
-                if (valueMap.get("attribute").equals(data.getAttribute()))
+                if (valueMap.get("attribute").equals(data.getAttributeName()))
                     values.add(valueMap.get("value"));
             });
-            dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
+            dataType.addData(data.getDataId(), data.getAttributeName(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
             // If the data was a primaryKey of the DataType, we add it to the primaryKey list
             if (data.isPrimaryKey()) {
-                dataType.addPrimaryKey(data.getAttribute());
+                dataType.addPrimaryKey(data.getAttributeName());
             }
         });
 
@@ -197,7 +196,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Indirect) || d.getSource().equals(Source.Produced)).toList());
         nondirectDatas.forEach(data -> {
             // We have to verify if provider accepted to give this data
-            boolean isAccepted = rightRestClient.getIfDataAccessAccepted(dataSubjectId, data.getId());
+            boolean isAccepted = rightRestClient.getIfDataAccessAccepted(dataSubjectId, data.getDataId());
             if(isAccepted) {
                 // Construct each dataType
                 Optional<ProcessedPersonalDataDTO> processedPersonalDataDTO = response.stream().filter(p -> p.getDataTypeName().equals(data.getDataType().getDataTypeName())).findFirst();
@@ -210,18 +209,18 @@ public class DataService implements DataServiceInterface {
                 }
                 // Get data values
                 ArrayList<String> attributesNames = new ArrayList<>();
-                attributesNames.add(data.getAttribute());
+                attributesNames.add(data.getAttributeName());
                 ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), attributesNames));
                 ArrayList<String> values = new ArrayList<>();
                 valuesResponse.forEach(valueMap -> {
-                    if (valueMap.get("attribute").equals(data.getAttribute()))
+                    if (valueMap.get("attribute").equals(data.getAttributeName()))
                         values.add(valueMap.get("value"));
                 });
-                dataType.addData(data.getId(), data.getAttribute(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
+                dataType.addData(data.getDataId(), data.getAttributeName(), values, data.getDataConservation(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPdCategoryName());
 
                 // If the data was a primaryKey of the DataType, we add it to the primaryKey list
                 if (data.isPrimaryKey()) {
-                    dataType.addPrimaryKey(data.getAttribute());
+                    dataType.addPrimaryKey(data.getAttributeName());
                 }
             }
         });
@@ -250,7 +249,7 @@ public class DataService implements DataServiceInterface {
                 response.add(dataType);
             }
 
-            dataType.addData(data.getId(), data.getAttribute());
+            dataType.addData(data.getDataId(), data.getAttributeName());
         });
 
         return response;
@@ -270,7 +269,6 @@ public class DataService implements DataServiceInterface {
     public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef) {
         // Get the list of processed personal data
         List<ProcessedPersonalDataDTO> processedPersonalDataDTOList = getProcessedPersonalDataList(idRef);
-        System.out.println("[1] ProcessedPersonalDataDTOList: " + processedPersonalDataDTOList);
 
         List<DataListTransferDTO> dataListTransferDTOList = new ArrayList<>();
         Map<Integer, List<SecondaryActor>> secondaryActorMap = new HashMap<>();
@@ -282,14 +280,11 @@ public class DataService implements DataServiceInterface {
                 List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataId(dataId);
                 secondaryActorMap.put(dataId, secondaryActors);
             }
-            System.out.println("[2] SecondaryActorMap: " + secondaryActorMap);
         }
 
         for (Integer dataId : secondaryActorMap.keySet()) {
             List<SecondaryActor> secondaryActors = secondaryActorMap.get(dataId);
-            System.out.println("[3] SecondaryActors: " + secondaryActors);
             for (SecondaryActor secondaryActor : secondaryActors) {
-                System.out.println("[4] SecondaryActor: " + secondaryActor);
                 if (!dataListTransferDTOList.contains(secondaryActor)) {
                     // Construct each dataListTransferDTO and add it to the list
                     DataListTransferDTO dataListTransferDTO = new DataListTransferDTO(
@@ -313,18 +308,14 @@ public class DataService implements DataServiceInterface {
                             .filter(data -> data.getData().stream().anyMatch(item -> item.getDataId() == dataId))
                             .findFirst()
                             .orElse(null);
-                    System.out.println("[5] matchingProcessedData: " + matchingProcessedData);
 
                     if (matchingProcessedData != null) {
                         dataListTransferDTO.setDataTransfers(matchingProcessedData);
-                        System.out.println("[6] dataTransfersAdded?: " + dataListTransferDTO.getDataTransfers());
                         dataListTransferDTOList.add(dataListTransferDTO);
-                        System.out.println("[7] DataListTransferDTO: " + dataListTransferDTOList);
                     }
                 }
             }
         }
-        System.out.println("[8] DataListTransferDTOList: " + dataListTransferDTOList);
         return dataListTransferDTOList;
     }
 }
