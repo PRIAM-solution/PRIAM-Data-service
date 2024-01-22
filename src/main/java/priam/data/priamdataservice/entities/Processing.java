@@ -22,7 +22,7 @@ public class Processing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long processingId;
+    private int processingId;
 
     private String processingName;
 

@@ -33,18 +33,21 @@ public class TransferService implements TransferServiceInterface {
         PersonalDataTransfer res = transferRepository.save(transfer);
         return mapper.TransferToTransferDTO(res);
     }
+
     @Override
     public SecondaryActorDTO createSecondaryActor(SecondaryActorDTO secondaryActorDTO) {
         SecondaryActor secondaryActor = mapper.SecondaryActorDTOToSecondaryActor(secondaryActorDTO);
         SecondaryActor res = secondaryActorRepository.save(secondaryActor);
         return mapper.SecondaryActorToSecondaryActorDTO(res);
     }
+
     @Override
     public SecondaryActorCategoryDTO createSecondaryActorCategory(SecondaryActorCategoryDTO secondaryActorCategoryDTO) {
         SecondaryActorCategory category = mapper.SecondaryActorCategoryDTOToSecondaryActorCategory(secondaryActorCategoryDTO);
         SecondaryActorCategory res = secondaryActorCategoryRepository.save(category);
         return mapper.SecondaryActorCategoryToSecondaryActorCategoryDTO(res);
     }
+
     @Override
     public void createSecondaryActorTransfer(SecondaryActorTransferDTO secondaryActorTransferDTO) {
         PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByTransferId(secondaryActorTransferDTO.getTransferId());
@@ -54,6 +57,7 @@ public class TransferService implements TransferServiceInterface {
         transfer.setSecondaryActors(list);
         transferRepository.save(transfer);
     }
+
     @Override
     public void createDataTransfer(DataTransferDTO dataTransferDTO) {
         PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByTransferId(dataTransferDTO.getTransferId());

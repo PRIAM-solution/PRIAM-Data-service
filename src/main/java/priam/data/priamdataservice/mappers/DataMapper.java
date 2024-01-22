@@ -19,13 +19,13 @@ public interface DataMapper {
 
     //@Mapping(target = "data.dataType.dataList", ignore = true)
 
-    @Mapping(target = "data_type_name", source = "data.dataType.dataTypeName")
-    @Mapping(target = "data_type_id", source = "data.dataType.dataTypeId")
-    @Mapping(target = "data_subject_category", source = "data.dataSubjectCategory")
+//    @Mapping(target = "data_type_name", source = "data.dataType.dataTypeName")
+//    @Mapping(target = "data_type_id", source = "data.dataType.dataTypeId")
+//    @Mapping(target = "data_subject_category", source = "data.dataSubjectCategory")
     DataResponseDTO DataToDataResponseDTO(Data data);
 
     //@Mapping(target = "locationId", source = "dataRequestDTO.locationId")
-    @Mapping(target = "dataType.dataTypeId", source = "dataRequestDTO.data_type_id")
-    @Mapping(target = "dataSubjectCategory.dataSubjectCategoryId", source = "dataRequestDTO.data_subject_category_id")
+//    @Mapping(target = "dataType.dataTypeId", source = "dataRequestDTO.data_type_id")
+//    @Mapping(target = "dataSubjectCategory.dataSubjectCategoryId", source = "dataRequestDTO.data_subject_category_id")
     Data DataRequestDTOToData(DataRequestDTO dataRequestDTO);
 }

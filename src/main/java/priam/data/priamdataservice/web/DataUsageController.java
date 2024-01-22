@@ -27,7 +27,7 @@ public class DataUsageController {
     }
 
     @GetMapping("/")
-    public Collection<DataUsage> getDataUsages(Long processingId){
+    public Collection<DataUsage> getDataUsages(int processingId){
         return dataUsageService.getDataUsages(processingId);
     }
 

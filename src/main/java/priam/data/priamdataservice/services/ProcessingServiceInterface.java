@@ -9,12 +9,12 @@ import java.util.Collection;
 
 public interface ProcessingServiceInterface {
     Processing createProcessing(ProcessingRequestDTO processingRequestDTO);
-    ProcessingResponseDTO updateProcessing(Integer processingID, ProcessingRequestDTO processingRequestDTO);
+    ProcessingResponseDTO updateProcessing(Integer processingId, ProcessingRequestDTO processingRequestDTO);
     boolean deleteProcessing(Integer processingId);
     ProcessingResponseDTO getProcessing(Integer processingId);
     Collection<Processing> getProcessings();
 
-    Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dscId);
+    Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dataSubjectCategoryId);
 
     Collection<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef);
 

@@ -63,8 +63,8 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public DataResponseDTO getData(int id) {
-        Data data = dataRepository.findByDataId(id).get();
+    public DataResponseDTO getData(int dataId) {
+        Data data = dataRepository.findByDataId(dataId).get();
         DataSubjectCategory dsCategory = actorRestClient.getDataSubjectCategoryById(data.getDataSubjectCategory().getDataSubjectCategoryId());
         data.setDataSubjectCategory(dsCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
@@ -105,14 +105,14 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public String getDataNameById(int id) {
-        Data d = dataRepository.findByDataId(id).get();
+    public String getDataNameById(int dataId) {
+        Data d = dataRepository.findByDataId(dataId).get();
         return d.getDataName();
     }
 
     @Override
-    public List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory) {
-        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dSCategory);
+    public List<DataResponseDTO> findAllDataByDataSubjectCategory(int dataSubjectCategoryId) {
+        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dataSubjectCategoryId);
         List<DataResponseDTO> personalData = dataList.stream()
                 .filter(dto -> dto.isPersonal())
                 .map(dto -> dataMapper.DataToDataResponseDTO(dto))
@@ -121,8 +121,8 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId) {
-        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dSCategory);
+    public List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dataSubjectCategoryId, int dataSubjectId) {
+        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dataSubjectCategoryId);
         List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
         List<Data> personalData = dataList.stream()
                 .filter(dto -> dto.isPersonal() && processedDataIds.contains(dto.getDataId()))

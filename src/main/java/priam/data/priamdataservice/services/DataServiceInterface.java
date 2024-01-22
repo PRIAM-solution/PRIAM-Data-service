@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DataServiceInterface {
 
-    DataResponseDTO getData(int id);
+    DataResponseDTO getData(int dataId);
 
     List<DataResponseDTO> findAllPersonalData();
 
@@ -16,10 +16,10 @@ public interface DataServiceInterface {
 
     int getIdByDataName(String dataName);
 
-    String getDataNameById(int id);
+    String getDataNameById(int dataId);
 
-    List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory);
-    List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId);
+    List<DataResponseDTO> findAllDataByDataSubjectCategory(int dataSubjectCategoryId);
+    List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dataSubjectCategoryId, int dataSubjectId);
 
     DataResponseDTO save(DataRequestDTO dataRequestDTO);
 

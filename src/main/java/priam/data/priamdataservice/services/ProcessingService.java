@@ -49,10 +49,10 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public ProcessingResponseDTO updateProcessing(Integer id, ProcessingRequestDTO processingRequestDTO) {
+    public ProcessingResponseDTO updateProcessing(Integer processingId, ProcessingRequestDTO processingRequestDTO) {
         //log.info("UpdateProcessing start Process !");
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
-        Processing oldProcessing = processingRepository.findById(id).get();
+        Processing oldProcessing = processingRepository.findById(processingId).get();
         oldProcessing.setProcessingCategory(processing.getProcessingCategory());
         oldProcessing.setCreatedAt(processing.getCreatedAt());
         oldProcessing.setDataUsages(processing.getDataUsages());
@@ -89,12 +89,12 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dscId) {
+    public Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dataSubjectCategoryId) {
         Collection<Processing> processings = getProcessings();
         List<Integer> personalDataId = new LinkedList<>();
         Collection<ProcessingResponseDTO> processingsDsc = new LinkedList<>();
 
-        ArrayList<DataResponseDTO> dataList = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dscId));
+        ArrayList<DataResponseDTO> dataList = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubjectCategoryId));
         for (DataResponseDTO data: dataList) {
             personalDataId.add(data.getDataId());
         }
