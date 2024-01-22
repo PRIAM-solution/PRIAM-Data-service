@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProcessingResponseDTO {
-    private Long id;
-    private String name;
-    private ProcessingType type;
-    private ProcessingCategory category;
-    private Date creationDate;
-    private Date updatingDate;
+    private int processingId;
+    private String processingName;
+    private ProcessingType processingType;
+    private ProcessingCategory processingCategory;
+    private Date createdAt;
+    private Date modifiedAt;
     private List<DataUsage> dataUsages;
     private List<Purpose> purposes;
     //private Data data;

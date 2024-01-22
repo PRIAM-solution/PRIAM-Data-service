@@ -135,12 +135,12 @@ public class DataService implements DataServiceInterface {
         List<DataResponseDTO> dataListByDataType = new LinkedList<>();
         List<DataResponseDTO> dataList = findAllPersonalData();
         for (DataResponseDTO datum : dataList) {
-            if (datum.getData_type_name().equals(dataTypeName))
+            if (datum.getDataTypeName().equals(dataTypeName))
                 dataListByDataType.add(datum);
-            System.out.println(datum.getData_type_name());
+            System.out.println(datum.getDataTypeName());
         }
         for (DataResponseDTO datum : dataListByDataType) {
-            System.out.println(datum.getData_type_name());
+            System.out.println(datum.getDataTypeName());
         }
         return dataListByDataType;
     }
@@ -149,8 +149,8 @@ public class DataService implements DataServiceInterface {
     public List<ProcessedPersonalDataDTO> getProcessedPersonalDataList(String idRef) {
         ArrayList<ProcessedPersonalDataDTO> response = new ArrayList<>();
         DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
-        int dSCategory = dataSubject.getDscId();
-        int dataSubjectId = dataSubject.getId();
+        int dSCategory = dataSubject.getDataSubjectCategoryId();
+        int dataSubjectId = dataSubject.getDataSubjectId();
 
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
@@ -223,8 +223,8 @@ public class DataService implements DataServiceInterface {
     public List<ProcessedIndirectAndProducedPersonalDataDTO> getProcessedIndirectAndProducedPersonalDataList(String idRef) {
         ArrayList<ProcessedIndirectAndProducedPersonalDataDTO> response = new ArrayList<>();
         DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
-        int dSCategory = dataSubject.getDscId();
-        int dataSubjectId = dataSubject.getId();
+        int dSCategory = dataSubject.getDataSubjectCategoryId();
+        int dataSubjectId = dataSubject.getDataSubjectId();
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // Get indirect and produced datas

@@ -27,8 +27,8 @@ public class ProcessingPersonalDataDTO {
     private List<PurposeListItem> purposes = new ArrayList<>();
     private List<DataListItem> data = new ArrayList<>();
 
-    public void addPurposeDescription(String description) {
-        this.purposes.add(new PurposeListItem(description));
+    public void addPurposeDescription(String purposeDescription) {
+        this.purposes.add(new PurposeListItem(purposeDescription));
     }
     public void addDataName(String dataName) {
         this.data.add(new DataListItem(dataName));

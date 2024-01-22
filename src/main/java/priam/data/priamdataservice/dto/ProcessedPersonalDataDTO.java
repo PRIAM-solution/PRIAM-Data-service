@@ -3,6 +3,7 @@ package priam.data.priamdataservice.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import priam.data.priamdataservice.enums.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +25,12 @@ public class ProcessedPersonalDataDTO {
         this.getPrimaryKeys().add(new PrimaryKeysListItem(primaryKeyName));
     }
 
-    public void addData(int dataId, String dataName, List<String> dataValues, int dataConservationDuration, String source, String sourceDetails, String personalDataCategory) {
+    public void addData(int dataId, String dataName, List<String> dataValues, int dataConservationDuration, String sourceName, String sourceDetails, String personalDataCategory) {
         DataListItem data = new DataListItem();
         data.setDataId(dataId);
         data.setDataName(dataName);
         data.setDataValue(dataValues);
-        data.setSource(source);
+        data.setSourceName(sourceName);
         data.setSourceDetails(sourceDetails);
         data.setDataConservationDuration(dataConservationDuration);
         data.setPersonalDataCategory(personalDataCategory);
@@ -52,7 +53,7 @@ public class ProcessedPersonalDataDTO {
         private String dataName;
         private List<String> dataValue;
         private int dataConservationDuration;
-        private String source;
+        private String sourceName;
         private String sourceDetails;
         private String personalDataCategory;
     }

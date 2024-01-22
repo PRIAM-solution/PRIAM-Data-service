@@ -119,12 +119,12 @@ public class ProcessingService implements ProcessingServiceInterface  {
         DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
 
         // Retrieve associated processings and datas
-        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDscId());
+        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDataSubjectCategoryId());
 
         ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
         for (ProcessingResponseDTO processing: processings) {
             ProcessingPersonalDataDTO p = new ProcessingPersonalDataDTO();
-            p.setProcessingName(processing.getName());
+            p.setProcessingName(processing.getProcessingName());
             // Purposes
             processing.getPurposes().forEach(purpose -> {
                 p.addPurposeDescription(purpose.getPurposeDescription());
