@@ -11,14 +11,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "gdpr_purpose")
+@Table(name = "Purpose")
 public class Purpose {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int purposeID;
+    private int purposeId;
     @Column(nullable = false)
-    private String description;
-    private PurposeType type;
+    private String purposeDescription;
+    private PurposeType purposeType;
 //	@JsonIgnore
 //	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //	private Processing processing;

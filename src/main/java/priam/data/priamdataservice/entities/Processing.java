@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "gdpr_Processing")
+@Table(name = "Processing")
 @lombok.Data @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +22,13 @@ public class Processing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long processingId;
 
-    private String name;
+    private String processingName;
 
-    private ProcessingType type;
+    private ProcessingType processingType;
 
-    private ProcessingCategory category;
+    private ProcessingCategory processingCategory;
 
    /* private int dataId;
     @Transient
@@ -37,12 +37,12 @@ public class Processing {
     @Column(nullable = true,updatable = false)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private Date createdAt;
 
     @Column(nullable = true)
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatingDate;
+    private Date modifiedAt;
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processing",fetch = FetchType.LAZY)
@@ -53,19 +53,19 @@ public class Processing {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "gdpr_ProcessingMesure", joinColumns = @JoinColumn(name = "processingID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "mesureID", referencedColumnName = "mesureID"))
-    private List<Mesure> mesures = new ArrayList<>();
+    private List<Measure> measures = new ArrayList<>();
 
-    public Processing(String name, ProcessingType type, ProcessingCategory category, Date creationDate,
-                      Date updatingDate, List<DataUsage> dataUsages, List<Purpose> purposes, List<Mesure> mesures) {
+    public Processing(String processingName, ProcessingType processingType, ProcessingCategory processingCategory, Date createdAt,
+                      Date modifiedAt, List<DataUsage> dataUsages, List<Purpose> purposes, List<Measure> measures) {
         super();
-        this.name = name;
-        this.type = type;
-        this.category = category;
-        this.creationDate = creationDate;
-        this.updatingDate = updatingDate;
+        this.processingName = processingName;
+        this.processingType = processingType;
+        this.processingCategory = processingCategory;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
         this.dataUsages = dataUsages;
         this.purposes = purposes;
-        this.mesures = mesures;
+        this.measures = measures;
     }
 
 }

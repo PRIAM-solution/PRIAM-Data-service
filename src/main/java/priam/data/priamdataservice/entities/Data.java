@@ -11,7 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@lombok.Data @ToString
+@lombok.Data
+@ToString
 @Table(name = "Data")
 public class Data {
 

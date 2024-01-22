@@ -3,10 +3,7 @@ package priam.data.priamdataservice.entities;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +12,7 @@ import javax.persistence.Table;
 @Table(name = "PersonalDataCategory")
 public class PersonalDataCategory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int personalDataCategoryId;
     @Column
     private String personalDataCategoryName;

@@ -53,14 +53,14 @@ public class ProcessingService implements ProcessingServiceInterface  {
         //log.info("UpdateProcessing start Process !");
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
         Processing oldProcessing = processingRepository.findById(id).get();
-        oldProcessing.setCategory(processing.getCategory());
-        oldProcessing.setCreationDate(processing.getCreationDate());
+        oldProcessing.setProcessingCategory(processing.getProcessingCategory());
+        oldProcessing.setCreatedAt(processing.getCreatedAt());
         oldProcessing.setDataUsages(processing.getDataUsages());
-        oldProcessing.setMesures(processing.getMesures());
-        oldProcessing.setName(processing.getName());
+        oldProcessing.setMeasures(processing.getMeasures());
+        oldProcessing.setProcessingName(processing.getProcessingName());
         oldProcessing.setPurposes(processing.getPurposes());
-        oldProcessing.setType(processing.getType());
-        oldProcessing.setUpdatingDate(new Date());
+        oldProcessing.setProcessingType(processing.getProcessingType());
+        oldProcessing.setModifiedAt(new Date());
         processingRepository.save(oldProcessing);
         return processingMapper.fromProcessing(oldProcessing);
     }
@@ -82,7 +82,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
     public Collection<Processing> getProcessings() {
         Collection<Processing> processings = processingRepository.findAll();
         for (Processing processing: processings){
-            processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processing.getId()));
+            processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processing.getProcessingId()));
         }
         return processings;
         //return processingRepository.findAll();
@@ -127,7 +127,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
             p.setProcessingName(processing.getName());
             // Purposes
             processing.getPurposes().forEach(purpose -> {
-                p.addPurposeDescription(purpose.getDescription());
+                p.addPurposeDescription(purpose.getPurposeDescription());
             });
             // Datas
             processing.getDataUsages().forEach(dataUsage -> {

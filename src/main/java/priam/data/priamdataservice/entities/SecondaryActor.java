@@ -8,18 +8,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @lombok.Data
-@Table(name = "secondary_actor")
+@Table(name = "SecondaryActor")
 public class SecondaryActor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
-    private String email;
-    private String phone;
-    private String address;
-    private String country;
+    private int secondaryActorId;
+    private SecondaryActorType secondaryActorType;
+    private String secondaryActorName;
+    private String secondaryActorAddress;
+    private String secondaryActorPhone;
+    private String secondaryActorEmail;
     private String safeguard;
     private SafeguardType safeguardType;
+
+    @ManyToOne
+    private Country country;
+
     private String username;
     private String password;
 

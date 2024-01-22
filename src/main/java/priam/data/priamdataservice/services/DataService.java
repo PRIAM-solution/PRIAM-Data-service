@@ -280,11 +280,12 @@ public class DataService implements DataServiceInterface {
                 if (!dataListTransferDTOList.contains(secondaryActor)) {
                     // Construct each dataListTransferDTO and add it to the list
                     DataListTransferDTO dataListTransferDTO = new DataListTransferDTO(
-                            secondaryActor.getId(),
-                            secondaryActor.getName(),
-                            secondaryActor.getEmail(),
-                            secondaryActor.getPhone(),
-                            secondaryActor.getAddress(),
+                            secondaryActor.getSecondaryActorId(),
+                            secondaryActor.getSecondaryActorType(),
+                            secondaryActor.getSecondaryActorName(),
+                            secondaryActor.getSecondaryActorEmail(),
+                            secondaryActor.getSecondaryActorPhone(),
+                            secondaryActor.getSecondaryActorAddress(),
                             secondaryActor.getCountry(),
                             secondaryActor.getSafeguard(),
                             secondaryActor.getSafeguardType(),

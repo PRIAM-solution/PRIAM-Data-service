@@ -21,12 +21,11 @@ public interface DataMapper {
 
     @Mapping(target = "data_type_name", source = "data.dataType.dataTypeName")
     @Mapping(target = "data_type_id", source = "data.dataType.dataTypeId")
-    @Mapping(target = "dsCategory", source = "data.dsCategory")
+    @Mapping(target = "data_subject_category", source = "data.dataSubjectCategory")
     DataResponseDTO DataToDataResponseDTO(Data data);
 
     //@Mapping(target = "locationId", source = "dataRequestDTO.locationId")
     @Mapping(target = "dataType.dataTypeId", source = "dataRequestDTO.data_type_id")
-    @Mapping(target = "dsCategory.dscId", source = "dataRequestDTO.dscId")
+    @Mapping(target = "dataSubjectCategory.dataSubjectCategoryId", source = "dataRequestDTO.data_subject_category_id")
     Data DataRequestDTOToData(DataRequestDTO dataRequestDTO);
-
 }

@@ -16,7 +16,7 @@ public class DataUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int dataUsageId;
 
     private boolean personalStatus;
 

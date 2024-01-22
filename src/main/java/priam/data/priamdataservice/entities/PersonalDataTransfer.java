@@ -10,12 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @lombok.Data
-@Table(name = "personal_data_transfer")
+@Table(name = "PersonalDataTransfer")
 public class PersonalDataTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transfer_id")
-    private int transferId;
+    private int personalDataTransferId;
 
     @OneToOne
     private Processing processing;
