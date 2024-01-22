@@ -65,7 +65,7 @@ public class DataService implements DataServiceInterface {
     @Override
     public DataResponseDTO getData(int id) {
         Data data = dataRepository.findByDataId(id).get();
-        DataSubjectCategory dsCategory = actorRestClient.getDSCategoryById(data.getDataSubjectCategory().getDataSubjectCategoryId());
+        DataSubjectCategory dsCategory = actorRestClient.getDataSubjectCategoryById(data.getDataSubjectCategory().getDataSubjectCategoryId());
         data.setDataSubjectCategory(dsCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
 
@@ -76,7 +76,7 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllPersonalData() {
         List<Data> dataList = dataRepository.findAllByIsPersonal(true);
         for (Data datum : dataList) {
-            DataSubjectCategory dataSubjectCategory = actorRestClient.getDSCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
+            DataSubjectCategory dataSubjectCategory = actorRestClient.getDataSubjectCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
             datum.setDataSubjectCategory(dataSubjectCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList
@@ -89,7 +89,7 @@ public class DataService implements DataServiceInterface {
     public List<DataResponseDTO> findAllData() {
         List<Data> dataList = dataRepository.findAll();
         for (Data datum : dataList) {
-            DataSubjectCategory dataSubjectCategory = actorRestClient.getDSCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
+            DataSubjectCategory dataSubjectCategory = actorRestClient.getDataSubjectCategoryById(datum.getDataSubjectCategory().getDataSubjectCategoryId());
             datum.setDataSubjectCategory(dataSubjectCategory);
         }
         List<DataResponseDTO> dataResponseDTOS = dataList

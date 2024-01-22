@@ -40,8 +40,8 @@ public class ProcessingController {
         return processingService.getProcessings();
     }
 
-    @GetMapping("/listProcessings/{dsc}")
-    public Collection<ProcessingResponseDTO> getProcByDscID(@PathVariable int dsc) {
-        return processingService.getProcessingsByDsc(dsc);
+    @GetMapping("/listProcessings/{dataSubjectCategoryId}")
+    public Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(@PathVariable int dataSubjectCategoryId) {
+        return processingService.getProcessingsByDataSubjectCategoryId(dataSubjectCategoryId);
     }
 }

@@ -14,7 +14,7 @@ public interface ProcessingServiceInterface {
     ProcessingResponseDTO getProcessing(Long processingId);
     Collection<Processing> getProcessings();
 
-    Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId);
+    Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dscId);
 
     Collection<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef);
 

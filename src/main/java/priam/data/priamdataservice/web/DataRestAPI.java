@@ -37,9 +37,9 @@ public class DataRestAPI {
         return dataService.getIdByDataName(dataName);
     }
 
-    @GetMapping(path = "/getDataName/{id}")
-    public String getDataName(@PathVariable int id) {
-        return dataService.getDataNameById(id);
+    @GetMapping(path = "/getDataName/{dataId}")
+    public String getDataName(@PathVariable int dataId) {
+        return dataService.getDataNameById(dataId);
     }
 
     @GetMapping(path = "/personalDataList")
@@ -47,9 +47,9 @@ public class DataRestAPI {
         return dataService.findAllPersonalData();
     }
 
-    @GetMapping(path = "/personalData/{id}")
-    public DataResponseDTO getPersonalData(@PathVariable int id) {
-        return dataService.getData(id);
+    @GetMapping(path = "/personalData/{dataId}")
+    public DataResponseDTO getPersonalData(@PathVariable int dataId) {
+        return dataService.getData(dataId);
     }
 
     @GetMapping(path = "/dataList")
@@ -57,9 +57,9 @@ public class DataRestAPI {
         return dataService.findAllData();
     }
 
-    @GetMapping(path = "/data/{dscategory}")
-    public List<DataResponseDTO> getPersonalDataByDSCategory(@PathVariable int dscategory) {
-        return dataService.findAllDataByDataSubjectCategory(dscategory);
+    @GetMapping(path = "/data/{dataSubjectCategory}")
+    public List<DataResponseDTO> getPersonalDataByDataSubjectCategory(@PathVariable int dataSubjectCategory) {
+        return dataService.findAllDataByDataSubjectCategory(dataSubjectCategory);
     }
 
     @GetMapping(path = "/data/dataType:{dataTypeName}")

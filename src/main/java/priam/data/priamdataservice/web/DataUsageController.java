@@ -31,9 +31,9 @@ public class DataUsageController {
         return dataUsageService.getDataUsages(processingId);
     }
 
-    @GetMapping("/{id}")
-    public DataUsageResponseDTO getDataUsage(@PathVariable Long id) {
-        return dataUsageService.getDataUsage(id);
+    @GetMapping("/{dataUsageId}")
+    public DataUsageResponseDTO getDataUsage(@PathVariable Long dataUsageId) {
+        return dataUsageService.getDataUsage(dataUsageId);
     }
 
 }

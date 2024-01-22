@@ -89,7 +89,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId) {
+    public Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dscId) {
         Collection<Processing> processings = getProcessings();
         List<Integer> personalDataId = new LinkedList<>();
         Collection<ProcessingResponseDTO> processingsDsc = new LinkedList<>();
@@ -119,7 +119,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
         DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
 
         // Retrieve associated processings and datas
-        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDataSubjectCategoryId());
+        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDataSubjectCategoryId(dataSubject.getDataSubjectCategoryId());
 
         ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
         for (ProcessingResponseDTO processing: processings) {
