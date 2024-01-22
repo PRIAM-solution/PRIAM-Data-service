@@ -12,27 +12,27 @@ import priam.data.priamdataservice.services.TransferService;
 @RequestMapping("transfer")
 @AllArgsConstructor
 public class TransferAPI {
-    private final TransferService service;
+    private final TransferService transferService;
 
     @PostMapping("")
     public PersonalDataTransferDTO createTransfer(@RequestBody PersonalDataTransferDTO transferDTO) {
-        return service.createTransfer(transferDTO);
+        return transferService.createTransfer(transferDTO);
     }
 
     @PostMapping("/secondaryActor")
     public SecondaryActorDTO createSecondaryActor(@RequestBody SecondaryActorDTO secondaryActorDTO) {
-        return service.createSecondaryActor(secondaryActorDTO);
+        return transferService.createSecondaryActor(secondaryActorDTO);
     }
     @PostMapping("/secondaryActorCategory")
     public SecondaryActorCategoryDTO createSecondaryActorCategory(@RequestBody SecondaryActorCategoryDTO secondaryActorCategoryDTO) {
-        return service.createSecondaryActorCategory(secondaryActorCategoryDTO);
+        return transferService.createSecondaryActorCategory(secondaryActorCategoryDTO);
     }
     @PostMapping("/secondaryActorTransfer")
     public void createSecondaryActorTransfer(@RequestBody SecondaryActorTransferDTO secondaryActorTransferDTO) {
-        service.createSecondaryActorTransfer(secondaryActorTransferDTO);
+        transferService.createSecondaryActorTransfer(secondaryActorTransferDTO);
     }
     @PostMapping("/dataTransfer")
     public void createDataTransfer(@RequestBody DataTransferDTO dataTransferDTO) {
-        service.createDataTransfer(dataTransferDTO);
+        transferService.createDataTransfer(dataTransferDTO);
     }
 }

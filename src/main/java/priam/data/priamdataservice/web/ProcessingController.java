@@ -14,7 +14,7 @@ import java.util.Collection;
 public class ProcessingController {
 
 
-    private ProcessingService processingService;
+    private final ProcessingService processingService;
 
     public ProcessingController(ProcessingService processingService) {
         this.processingService = processingService;

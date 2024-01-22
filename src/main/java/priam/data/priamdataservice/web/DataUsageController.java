@@ -14,26 +14,26 @@ import java.util.Collection;
 @AllArgsConstructor
 public class DataUsageController {
     @Autowired
-    DataUsageServiceInterface service;
+    DataUsageServiceInterface dataUsageService;
 
     @PostMapping("/create")
     public DataUsage newDataUsage(DataUsage dataUsage) {
-        return service.createDataUsage(dataUsage);
+        return dataUsageService.createDataUsage(dataUsage);
     }
 
     @PutMapping("/update")
     public DataUsage modifyDataUsage(DataUsage dataUsage) {
-        return service.updateDataUsage(dataUsage);
+        return dataUsageService.updateDataUsage(dataUsage);
     }
 
     @GetMapping("/")
     public Collection<DataUsage> getDataUsages(Long processingId){
-        return service.getDataUsages(processingId);
+        return dataUsageService.getDataUsages(processingId);
     }
 
     @GetMapping("/{id}")
     public DataUsageResponseDTO getDataUsage(@PathVariable Long id) {
-        return service.getDataUsage(id);
+        return dataUsageService.getDataUsage(id);
     }
 
 }
