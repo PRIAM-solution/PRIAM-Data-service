@@ -7,6 +7,6 @@ import priam.data.priamdataservice.entities.DataUsage;
 import java.util.Collection;
 
 @Repository
-public interface DataUsageRepository extends JpaRepository<DataUsage, Long> {
-    Collection<DataUsage>findAllByProcessingId(Long processingId);
+public interface DataUsageRepository extends JpaRepository<DataUsage, Integer> {
+    Collection<DataUsage>findAllByProcessingId(int processingId);
 }

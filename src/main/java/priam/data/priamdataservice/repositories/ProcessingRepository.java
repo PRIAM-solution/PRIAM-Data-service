@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import priam.data.priamdataservice.entities.Processing;
 
 @Repository
-public interface ProcessingRepository extends JpaRepository<Processing, Long> {
+public interface ProcessingRepository extends JpaRepository<Processing, Integer> {
 
 }

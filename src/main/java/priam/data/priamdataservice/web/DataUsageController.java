@@ -32,7 +32,7 @@ public class DataUsageController {
     }
 
     @GetMapping("/{dataUsageId}")
-    public DataUsageResponseDTO getDataUsage(@PathVariable Long dataUsageId) {
+    public DataUsageResponseDTO getDataUsage(@PathVariable Integer dataUsageId) {
         return dataUsageService.getDataUsage(dataUsageId);
     }
 

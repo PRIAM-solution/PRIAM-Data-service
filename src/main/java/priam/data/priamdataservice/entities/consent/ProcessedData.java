@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name="processed_data")
 public class ProcessedData {
     @Id
-    private Long dataSubjectId;
+    private int dataSubjectId;
     @Id
-    private Long dataId;
+    private int dataId;
 }

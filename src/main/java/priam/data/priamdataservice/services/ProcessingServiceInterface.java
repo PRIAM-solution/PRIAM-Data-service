@@ -9,9 +9,9 @@ import java.util.Collection;
 
 public interface ProcessingServiceInterface {
     Processing createProcessing(ProcessingRequestDTO processingRequestDTO);
-    ProcessingResponseDTO updateProcessing(Long processingID, ProcessingRequestDTO processingRequestDTO);
-    boolean deleteProcessing(Long processingId);
-    ProcessingResponseDTO getProcessing(Long processingId);
+    ProcessingResponseDTO updateProcessing(Integer processingID, ProcessingRequestDTO processingRequestDTO);
+    boolean deleteProcessing(Integer processingId);
+    ProcessingResponseDTO getProcessing(Integer processingId);
     Collection<Processing> getProcessings();
 
     Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dscId);

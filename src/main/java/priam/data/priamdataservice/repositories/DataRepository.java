@@ -11,7 +11,7 @@ public interface DataRepository extends JpaRepository<Data, Integer> {
     int getIdByDataName(String dataName);
     Data findByDataName(String dataName);
 
-    List<Data> findAllByDscId(int dSCategory);
+    List<Data> findAllByDataSubjectCategoryId(int dataSubjectCategoryId);
     List<Data> findAllByIsPersonal(boolean isPersonal);
-    DataType findDataTypeByDataId(int id);
+    DataType findDataTypeByDataId(int dataId);
 }

@@ -6,8 +6,8 @@ import priam.data.priamdataservice.entities.SecondaryActor;
 
 import java.util.List;
 
-public interface SecondaryActorRepository extends JpaRepository<SecondaryActor, Long> {
-    SecondaryActor findSecondaryActorById(int id);
+public interface SecondaryActorRepository extends JpaRepository<SecondaryActor, Integer> {
+    SecondaryActor findSecondaryActorById(int secondaryActorId);
 
     @Query(value = "SELECT sa.id, sa.name, sa.email, sa.phone, sa.address, sa.country, sa.safeguard, sa.safeguard_type, sa.username, sa.password,sa.secondary_actor_category_secondary_actor_category_id, sac.secondary_actor_category_name " +
             "FROM secondary_actor sa " +

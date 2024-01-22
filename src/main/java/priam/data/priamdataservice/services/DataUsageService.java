@@ -49,13 +49,13 @@ public class DataUsageService implements DataUsageServiceInterface {
     }
 
     @Override
-    public boolean deleteDataUsage(Long dataUsageId) {
+    public boolean deleteDataUsage(Integer dataUsageId) {
         dataUsageRepository.deleteById(dataUsageId);
         return true;
     }
 
     @Override
-    public DataUsageResponseDTO getDataUsage(Long dataUsageId) {
+    public DataUsageResponseDTO getDataUsage(Integer dataUsageId) {
         DataUsage dataUsage = dataUsageRepository.findById(dataUsageId).get();
         Data data = dataRepository.findByDataId(dataUsage.getDataId()).get();
         dataUsage.setData(data);
@@ -63,7 +63,7 @@ public class DataUsageService implements DataUsageServiceInterface {
     }
 
     @Override
-    public Collection<DataUsage> getDataUsages(Long processingId) {
+    public Collection<DataUsage> getDataUsages(int processingId) {
         //Collection<DataUsage> datausages = dataUsageRepository.findAll();
         Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessingId(processingId);
         for (DataUsage d: datausages){

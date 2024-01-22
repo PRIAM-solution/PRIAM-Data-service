@@ -49,7 +49,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public ProcessingResponseDTO updateProcessing(Long id,ProcessingRequestDTO processingRequestDTO) {
+    public ProcessingResponseDTO updateProcessing(Integer id, ProcessingRequestDTO processingRequestDTO) {
         //log.info("UpdateProcessing start Process !");
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
         Processing oldProcessing = processingRepository.findById(id).get();
@@ -66,13 +66,13 @@ public class ProcessingService implements ProcessingServiceInterface  {
     }
 
     @Override
-    public boolean deleteProcessing(Long processingId) {
+    public boolean deleteProcessing(Integer processingId) {
         processingRepository.deleteById(processingId);
         return true;
     }
 
     @Override
-    public ProcessingResponseDTO getProcessing(Long processingId) {
+    public ProcessingResponseDTO getProcessing(Integer processingId) {
         Processing processing = processingRepository.findById(processingId).get();
         //processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processingId));
         return processingMapper.fromProcessing(processing);

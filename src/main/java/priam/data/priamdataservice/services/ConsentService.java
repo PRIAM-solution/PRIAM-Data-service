@@ -35,7 +35,7 @@ public class ConsentService implements ConsentServiceInterface{
 
         Collection<DataUsage> datas = dataUsageService.getDataUsages(result.getProcessingId());
         datas.forEach(data -> {
-            ProcessedData processedData = new ProcessedData(result.getDataSubjectId(), (long) data.getDataId());
+            ProcessedData processedData = new ProcessedData(result.getDataSubjectId(), data.getDataId());
             processedDataRepository.save(processedData);
         });
 

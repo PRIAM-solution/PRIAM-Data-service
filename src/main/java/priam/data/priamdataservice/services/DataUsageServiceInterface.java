@@ -9,7 +9,7 @@ import java.util.Collection;
 public interface DataUsageServiceInterface {
     DataUsage createDataUsage(DataUsage dataUsage);
     DataUsage updateDataUsage(DataUsage dataUsage);
-    boolean deleteDataUsage(Long dataUsageId);
-    DataUsageResponseDTO getDataUsage(Long dataUsageId);
-    Collection<DataUsage> getDataUsages(Long processingId);
+    boolean deleteDataUsage(Integer dataUsageId);
+    DataUsageResponseDTO getDataUsage(Integer dataUsageId);
+    Collection<DataUsage> getDataUsages(int processingId);
 }

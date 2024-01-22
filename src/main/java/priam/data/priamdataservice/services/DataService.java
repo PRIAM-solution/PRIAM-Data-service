@@ -112,7 +112,7 @@ public class DataService implements DataServiceInterface {
 
     @Override
     public List<DataResponseDTO> findAllDataByDataSubjectCategory(int dSCategory) {
-        List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
+        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dSCategory);
         List<DataResponseDTO> personalData = dataList.stream()
                 .filter(dto -> dto.isPersonal())
                 .map(dto -> dataMapper.DataToDataResponseDTO(dto))
@@ -122,7 +122,7 @@ public class DataService implements DataServiceInterface {
 
     @Override
     public List<Data> findAllProcessedDataByDataSubjectCategoryAndId(int dSCategory, int dataSubjectId) {
-        List<Data> dataList = (List<Data>) dataRepository.findAllByDscId(dSCategory);
+        List<Data> dataList = (List<Data>) dataRepository.findAllByDataSubjectCategoryId(dSCategory);
         List<Integer> processedDataIds = processedDataRepository.findDataIdByDataSubjectId(dataSubjectId);
         List<Data> personalData = dataList.stream()
                 .filter(dto -> dto.isPersonal() && processedDataIds.contains(dto.getDataId()))

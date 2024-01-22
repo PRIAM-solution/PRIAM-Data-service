@@ -26,12 +26,12 @@ public class ProcessingController {
     }
 
     @PutMapping("/update/{processingId}")
-    public ProcessingResponseDTO modifyProcessing(@PathVariable Long processingId, @RequestBody ProcessingRequestDTO processingRequestDTO) {
+    public ProcessingResponseDTO modifyProcessing(@PathVariable Integer processingId, @RequestBody ProcessingRequestDTO processingRequestDTO) {
         return processingService.updateProcessing(processingId,processingRequestDTO);
     }
 
     @GetMapping("/{id}")
-    public ProcessingResponseDTO getProcessing(@PathVariable Long id) {
+    public ProcessingResponseDTO getProcessing(@PathVariable Integer id) {
         return processingService.getProcessing(id);
     }
 
