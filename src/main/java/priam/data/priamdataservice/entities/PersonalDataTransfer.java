@@ -10,25 +10,25 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @lombok.Data
-@Table(name = "PersonalDataTransfer")
+@Table(name = "personal_data_transfer")
 public class PersonalDataTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transfer_id")
+    @Column
     private int personalDataTransferId;
 
     @OneToOne
     private Processing processing;
 
     @ManyToMany
-    @JoinTable(name = "data_transfer",
-            joinColumns = @JoinColumn(name = "transfer_id"),
+    @JoinTable(name = "personal_data_transfer_data",
+            joinColumns = @JoinColumn(name = "personal_data_transfer_id"),
             inverseJoinColumns = @JoinColumn(name = "data_id"))
     private List<Data> data;
 
     @ManyToMany
-    @JoinTable(name = "secondary_actor_transfer",
-            joinColumns = @JoinColumn(name = "transfer_id"),
-            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    @JoinTable(name = "personal_data_transfer_secondary_actor",
+            joinColumns = @JoinColumn(name = "personal_data_transfer_id"),
+            inverseJoinColumns = @JoinColumn(name = "secondary_actor_id"))
     private List<SecondaryActor> secondaryActors;
 }

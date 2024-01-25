@@ -63,10 +63,12 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public DataResponseDTO getData(int dataId) {
+    public DataResponseDTO getData(int dataId) { //TODO: Dorian check this function
         Data data = dataRepository.findByDataId(dataId).get();
-        DataSubjectCategory dsCategory = actorRestClient.getDataSubjectCategoryById(data.getDataSubjectCategory().getDataSubjectCategoryId());
-        data.setDataSubjectCategory(dsCategory);
+        System.out.println("Data: " + data);
+        System.out.println("DataSubjectCategory: " + data.getDataSubjectCategory());
+        DataSubjectCategory dataSubjectCategory = actorRestClient.getDataSubjectCategoryById(data.getDataSubjectCategoryId());
+        data.setDataSubjectCategory(dataSubjectCategory);
         DataResponseDTO dataResponseDTO = dataMapper.DataToDataResponseDTO(data);
 
         return dataResponseDTO;
@@ -155,7 +157,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // First, get all direct datas
-        ArrayList<Data> directDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Direct)).toList());
+        ArrayList<Data> directDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.DIRECT)).toList());
 
         directDatas.forEach(data -> {
             // Construct each dataType
@@ -171,9 +173,10 @@ public class DataService implements DataServiceInterface {
             ArrayList<String> datasNames = new ArrayList<>();
             datasNames.add(data.getDataName());
             ArrayList<Map<String, String>> valuesResponse = new ArrayList<>(providerRestClient.getPersonalDataValues(idRef, dataType.getDataTypeName(), datasNames));
+            System.out.println("valuesResponse: " + valuesResponse); //TODO
             ArrayList<String> values = new ArrayList<>();
             valuesResponse.forEach(valueMap -> {
-                if (valueMap.get("dataName").equals(data.getDataName()))
+                if (valueMap.get("attribute").equals(data.getDataName()))
                     values.add(valueMap.get("value"));
             });
             dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName());
@@ -185,7 +188,7 @@ public class DataService implements DataServiceInterface {
         });
 
         // Then the same thing, with the accepted undirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Indirect) || d.getSource().equals(Source.Produced)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).toList());
         nondirectDatas.forEach(data -> {
             // We have to verify if provider accepted to give this data
             boolean isAccepted = rightRestClient.getIfDataAccessAccepted(dataSubjectId, data.getDataId());
@@ -228,7 +231,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // Get indirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.Indirect) || d.getSource().equals(Source.Produced)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).toList());
 
         nondirectDatas.forEach(data -> {
             // Construct each dataType
@@ -269,7 +272,7 @@ public class DataService implements DataServiceInterface {
             // Fetch secondary actors for each data item in processed data
             for (ProcessedPersonalDataDTO.DataListItem dataListItem : processedPersonalDataDTO.getData()) {
                 int dataId = dataListItem.getDataId();
-                List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorByDataId(dataId);
+                List<SecondaryActor> secondaryActors = secondaryActorRepository.findSecondaryActorsByDataId(dataId);
                 secondaryActorMap.put(dataId, secondaryActors);
             }
         }
@@ -289,12 +292,10 @@ public class DataService implements DataServiceInterface {
                             secondaryActor.getCountry(),
                             secondaryActor.getSafeguard(),
                             secondaryActor.getSafeguardType(),
-                            secondaryActor.getUsername(),
-                            secondaryActor.getPassword(),
                             new SecondaryActorCategoryDTO(
                                     secondaryActor.getSecondaryActorCategory().getSecondaryActorCategoryId(),
                                     secondaryActor.getSecondaryActorCategory().getSecondaryActorCategoryName()),
-                            new ProcessedPersonalDataDTO() // Set dataTransfers accordingly
+                            new ProcessedPersonalDataDTO() //TODO: check to be filled
                     );
                     // Retrieve the ProcessedPersonalDataDTO of the processedPersonalDataDTOList with the dataId
                     ProcessedPersonalDataDTO matchingProcessedData = processedPersonalDataDTOList.stream()

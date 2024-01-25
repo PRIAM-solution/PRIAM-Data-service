@@ -16,4 +16,8 @@ public class DataSubjectCategory {
     private String dataSubjectCategoryName;
     @Column
     private String locationId;
+
+    @OneToMany
+    @JoinColumn(name = "data_subject_category_id")
+    private Data data;
 }

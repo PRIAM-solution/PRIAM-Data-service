@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import priam.data.priamdataservice.dto.ProcessedPersonalDataDTO;
 import priam.data.priamdataservice.entities.Country;
-import priam.data.priamdataservice.entities.SafeguardType;
-import priam.data.priamdataservice.entities.SecondaryActorType;
+import priam.data.priamdataservice.enums.SafeguardType;
+import priam.data.priamdataservice.enums.SecondaryActorType;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +20,6 @@ public class DataListTransferDTO { //TODO: check usage
     private Country country;
     private String safeguard;
     private SafeguardType safeguardType;
-    private String username;
-    private String password;
 
     private SecondaryActorCategoryDTO secondaryActorCategory;
 

@@ -8,5 +8,5 @@ import java.util.Collection;
 
 @Repository
 public interface DataUsageRepository extends JpaRepository<DataUsage, Integer> {
-    Collection<DataUsage>findAllByProcessingId(int processingId);
+    Collection<DataUsage> findAllByProcessing_ProcessingId(int processingId);
 }

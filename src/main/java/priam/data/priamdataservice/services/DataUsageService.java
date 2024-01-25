@@ -65,7 +65,7 @@ public class DataUsageService implements DataUsageServiceInterface {
     @Override
     public Collection<DataUsage> getDataUsages(int processingId) {
         //Collection<DataUsage> datausages = dataUsageRepository.findAll();
-        Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessingId(processingId);
+        Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessing_ProcessingId(processingId);
         for (DataUsage d: datausages){
             Data data = dataRepository.findByDataId(d.getDataId()).get();
             d.setData(data);

@@ -1,4 +1,4 @@
-package priam.data.priamdataservice.entities;
+package priam.data.priamdataservice.enums;
 
 public enum SafeguardType {
     ADEQUACY_DECISION,

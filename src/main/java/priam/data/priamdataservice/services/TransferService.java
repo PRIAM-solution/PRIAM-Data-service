@@ -50,9 +50,9 @@ public class TransferService implements TransferServiceInterface {
 
     @Override
     public void createSecondaryActorTransfer(SecondaryActorTransferDTO secondaryActorTransferDTO) {
-        PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByTransferId(secondaryActorTransferDTO.getTransferId());
+        PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByPersonalDataTransferId(secondaryActorTransferDTO.getTransferId());
         ArrayList<SecondaryActor> list = new ArrayList<>(transfer.getSecondaryActors());
-        SecondaryActor secondaryActor = secondaryActorRepository.findSecondaryActorById(secondaryActorTransferDTO.getSecondaryActorId());
+        SecondaryActor secondaryActor = secondaryActorRepository.findSecondaryActorBySecondaryActorId(secondaryActorTransferDTO.getSecondaryActorId());
         list.add(secondaryActor);
         transfer.setSecondaryActors(list);
         transferRepository.save(transfer);
@@ -60,7 +60,7 @@ public class TransferService implements TransferServiceInterface {
 
     @Override
     public void createDataTransfer(DataTransferDTO dataTransferDTO) {
-        PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByTransferId(dataTransferDTO.getTransferId());
+        PersonalDataTransfer transfer = transferRepository.findPersonalDataTransferByPersonalDataTransferId(dataTransferDTO.getTransferId());
         ArrayList<Data> list = new ArrayList<>(transfer.getData());
         Data data = dataRepository.findByDataId(dataTransferDTO.getDataId()).get();
         list.add(data);

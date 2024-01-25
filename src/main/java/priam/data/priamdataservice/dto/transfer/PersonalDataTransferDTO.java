@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonalDataTransferDTO {
-    private int transferId;
+    private int personalDataTransferId;
     private int processingId;
     private List<SecondaryActorDTO> secondaryActors = new ArrayList<>();
     private List<DataResponseDTO> data = new ArrayList<>();

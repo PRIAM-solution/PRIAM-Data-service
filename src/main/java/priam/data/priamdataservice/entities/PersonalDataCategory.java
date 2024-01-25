@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @lombok.Data
-@Table(name = "PersonalDataCategory")
+@Table(name = "personal_data_category")
 public class PersonalDataCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

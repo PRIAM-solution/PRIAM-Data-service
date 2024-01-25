@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @lombok.Data
 @ToString
-@Table(name = "Data")
+@Table(name = "data")
 public class Data {
 
     @Id
@@ -41,10 +41,9 @@ public class Data {
     private DataType dataType;
 
     @Transient
-    private DataType dataTypeObject;
-
-    @Transient
     private DataSubjectCategory dataSubjectCategory;
+    @Column
+    private int dataSubjectCategoryId;
 
     @JsonBackReference(value = "personal_data_category")
     @ManyToOne

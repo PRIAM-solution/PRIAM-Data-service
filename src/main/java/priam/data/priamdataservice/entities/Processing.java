@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Processing")
+@Table(name = "processing")
 @lombok.Data @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,7 +52,7 @@ public class Processing {
     private List<Purpose> purposes = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "gdpr_ProcessingMesure", joinColumns = @JoinColumn(name = "processingID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "mesureID", referencedColumnName = "mesureID"))
+    @JoinTable(name = "Processing_Measure", joinColumns = @JoinColumn(name = "processingId", referencedColumnName = "processingId"), inverseJoinColumns = @JoinColumn(name = "measureId", referencedColumnName = "measureId"))
     private List<Measure> measures = new ArrayList<>();
 
     public Processing(String processingName, ProcessingType processingType, ProcessingCategory processingCategory, Date createdAt,
@@ -66,6 +66,6 @@ public class Processing {
         this.dataUsages = dataUsages;
         this.purposes = purposes;
         this.measures = measures;
-    }
+    } //TODO: to be removed
 
 }

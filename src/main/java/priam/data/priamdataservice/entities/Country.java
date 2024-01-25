@@ -1,16 +1,15 @@
 package priam.data.priamdataservice.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
+@lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Country")
+@Table(name = "country")
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
