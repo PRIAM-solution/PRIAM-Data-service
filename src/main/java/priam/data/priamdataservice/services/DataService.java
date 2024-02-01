@@ -178,7 +178,7 @@ public class DataService implements DataServiceInterface {
                 if (valueMap.get("attribute").equals(data.getDataName()))
                     values.add(valueMap.get("value"));
             });
-            dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName());
+            dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName(), data.isPrimaryKey());
 
             // If the data was a primaryKey of the DataType, we add it to the primaryKey list
             if (data.isPrimaryKey()) {
@@ -210,7 +210,7 @@ public class DataService implements DataServiceInterface {
                     if (valueMap.get("attribute").equals(data.getDataName()))
                         values.add(valueMap.get("value"));
                 });
-                dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName());
+                dataType.addData(data.getDataId(), data.getDataName(), values, data.getDataConservationDuration(), data.getSource().name(), data.getSource().name(), data.getPersonalDataCategory().getPersonalDataCategoryName(), data.isPrimaryKey());
 
                 // If the data was a primaryKey of the DataType, we add it to the primaryKey list
                 if (data.isPrimaryKey()) {

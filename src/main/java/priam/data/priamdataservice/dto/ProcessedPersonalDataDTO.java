@@ -1,7 +1,9 @@
 package priam.data.priamdataservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import priam.data.priamdataservice.enums.Source;
 
@@ -25,7 +27,7 @@ public class ProcessedPersonalDataDTO {
         this.getPrimaryKeys().add(new PrimaryKeysListItem(primaryKeyName));
     }
 
-    public void addData(int dataId, String dataName, List<String> dataValues, int dataConservationDuration, String sourceName, String sourceDetails, String personalDataCategory) {
+    public void addData(int dataId, String dataName, List<String> dataValues, int dataConservationDuration, String sourceName, String sourceDetails, String personalDataCategory, boolean isPrimaryKey) {
         DataListItem data = new DataListItem();
         data.setDataId(dataId);
         data.setDataName(dataName);
@@ -34,6 +36,7 @@ public class ProcessedPersonalDataDTO {
         data.setSourceDetails(sourceDetails);
         data.setDataConservationDuration(dataConservationDuration);
         data.setPersonalDataCategory(personalDataCategory);
+        data.setPrimaryKey(isPrimaryKey);
 
         this.getData().add(data);
     }
@@ -56,5 +59,7 @@ public class ProcessedPersonalDataDTO {
         private String sourceName;
         private String sourceDetails;
         private String personalDataCategory;
+        @JsonProperty(value = "isPrimaryKey") // If not, it removes the 'is' part
+        private boolean isPrimaryKey;
     }
 }
