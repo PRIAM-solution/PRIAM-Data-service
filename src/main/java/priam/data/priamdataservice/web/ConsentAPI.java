@@ -15,6 +15,11 @@ import priam.data.priamdataservice.services.ConsentServiceInterface;
 public class ConsentAPI {
     private final ConsentServiceInterface consentServiceInterface;
 
+    /**
+     * Save a new Consend
+     * @param consentRequestDTO Information of the Consent
+     * @return The created Consent object
+     */
     @PostMapping("")
     public ConsentResponseDTO createConsent(@RequestBody ConsentRequestDTO consentRequestDTO) {
         return consentServiceInterface.save(consentRequestDTO);

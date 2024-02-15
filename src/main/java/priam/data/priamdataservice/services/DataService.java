@@ -63,7 +63,7 @@ public class DataService implements DataServiceInterface {
     }
 
     @Override
-    public DataResponseDTO getData(int dataId) { //TODO: Dorian check this function
+    public DataResponseDTO getData(int dataId) {
         Data data = dataRepository.findByDataId(dataId).get();
         System.out.println("Data: " + data);
         System.out.println("DataSubjectCategory: " + data.getDataSubjectCategory());
@@ -249,16 +249,6 @@ public class DataService implements DataServiceInterface {
         return response;
     }
 
-    /**
-     * Retrieves a list of DataListTransferDTO objects based on the specified reference ID.
-     * For each processed personal data associated with the reference ID, fetches secondary actors
-     * and constructs DataListTransferDTO objects containing the secondary actors and their
-     * corresponding processed personal data.
-     *
-     * @param idRef The reference ID used to retrieve processed personal data.
-     * @return A list of DataListTransferDTO objects containing secondary actors and their
-     *         associated processed personal data.
-     */
     @Override
     public List<DataListTransferDTO> getProcessedPersonalDataListTransfer(String idRef) {
         // Get the list of processed personal data

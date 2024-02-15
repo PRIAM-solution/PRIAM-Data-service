@@ -59,7 +59,7 @@ public class ProcessedPersonalDataDTO {
         private String sourceName;
         private String sourceDetails;
         private String personalDataCategory;
-        @JsonProperty(value = "isPrimaryKey") // If not, it removes the 'is' part
+        @JsonProperty(value = "isPrimaryKey") // If not here, it removes the 'is' part
         private boolean isPrimaryKey;
     }
 }
