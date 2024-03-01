@@ -7,14 +7,35 @@ import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.services.DataUsageServiceInterface;
 import priam.data.priamdataservice.dto.DataUsageResponseDTO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
 @RestController
 @RequestMapping("processing/data-usage")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @AllArgsConstructor
 public class DataUsageController {
     @Autowired
     DataUsageServiceInterface dataUsageService;
+    @Autowired
+    HttpServletRequest request;
+
+    /**
+     * Adds the original URL of the request to the session.
+     * <p>
+     * This method is annotated with {@literal @}ModelAttribute, which ensures
+     * that it is invoked before handling any request mapping method in this
+     * controller. It sets the 'originalUrl' attribute in the session to the
+     * request's URI. This attribute can be used to track the original URL
+     * requested by the user before any redirection or processing occurs.
+     *
+     * @param session the HTTP session to which the original URL attribute is added
+     */
+    @ModelAttribute
+    public void addOriginalUrlToSession(HttpSession session) {
+        session.setAttribute("originalUrl", request.getRequestURI());
+    }
 
     /**
      * Save a new DataUsage
@@ -42,7 +63,7 @@ public class DataUsageController {
      * @return A DataUsage object List
      */
     @GetMapping("/")
-    public Collection<DataUsage> getDataUsages(int processingId){
+    public Collection<DataUsage> getDataUsages(int processingId) {
         return dataUsageService.getDataUsages(processingId);
     }
 

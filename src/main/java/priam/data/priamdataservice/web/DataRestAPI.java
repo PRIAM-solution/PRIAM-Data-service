@@ -1,5 +1,6 @@
 package priam.data.priamdataservice.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
@@ -7,6 +8,8 @@ import priam.data.priamdataservice.services.DataServiceInterface;
 import priam.data.priamdataservice.services.DataTypeServiceInterface;
 import priam.data.priamdataservice.services.ProcessingServiceInterface;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class DataRestAPI {
     private final DataServiceInterface dataService;
     private final DataTypeServiceInterface dataTypeService;
     private final ProcessingServiceInterface processingService;
+    @Autowired
+    HttpServletRequest request;
 
     public DataRestAPI(DataServiceInterface dataService, DataTypeServiceInterface dataTypeService, ProcessingServiceInterface processingService) {
         this.dataService = dataService;
@@ -26,29 +31,57 @@ public class DataRestAPI {
     }
 
     /**
+     * Adds the original URL of the request to the session.
+     * <p>
+     * This method is annotated with {@literal @}ModelAttribute, which ensures
+     * that it is invoked before handling any request mapping method in this
+     * controller. It sets the 'originalUrl' attribute in the session to the
+     * request's URI. This attribute can be used to track the original URL
+     * requested by the user before any redirection or processing occurs.
+     *
+     * @param session the HTTP session to which the original URL attribute is added
+     */
+    @ModelAttribute
+    public void addOriginalUrlToSession(HttpSession session) {
+        session.setAttribute("originalUrl", request.getRequestURI());
+    }
+
+    /**
      * Save a new Data
+     *
      * @param dataRequestDTO Information of the Data
      * @return The created Data object
      */
     @PostMapping(path = "/data")
-    public DataResponseDTO save(@RequestBody DataRequestDTO dataRequestDTO) { return this.dataService.save(dataRequestDTO); }
+    public DataResponseDTO save(@RequestBody DataRequestDTO dataRequestDTO) {
+        return this.dataService.save(dataRequestDTO);
+    }
+
     /**
      * Save a new DataType
+     *
      * @param dataTypeRequestDTO Information of the DataType
      * @return The created DataType object
      */
     @PostMapping(path = "/datatype")
-    public DataTypeResponseDTO save(@RequestBody DataTypeRequestDTO dataTypeRequestDTO) { return this.dataTypeService.save(dataTypeRequestDTO); }
+    public DataTypeResponseDTO save(@RequestBody DataTypeRequestDTO dataTypeRequestDTO) {
+        return this.dataTypeService.save(dataTypeRequestDTO);
+    }
+
     /**
      * Retrieve a DataType name from its ID
+     *
      * @param dataTypeId ID of the DataType
      * @return The name of the DataType
      */
     @GetMapping(path = "/datatype/data/{dataTypeId}")
-    public String getDataTypeNameByDataTypeId(@PathVariable int dataTypeId) { return this.dataTypeService.getDataTypeNameByDataTypeId(dataTypeId); }
+    public String getDataTypeNameByDataTypeId(@PathVariable int dataTypeId) {
+        return this.dataTypeService.getDataTypeNameByDataTypeId(dataTypeId);
+    }
 
     /**
      * Retrieve a Data ID from its name
+     *
      * @param dataName Name of the Data
      * @return ID of the Data
      */
@@ -59,6 +92,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve a Data name from its ID
+     *
      * @param dataId ID of the Data
      * @return Name of the Data
      */
@@ -69,6 +103,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve the list of all personal data
+     *
      * @return A DataResponseDTO object List
      */
     @GetMapping(path = "/personalDataList")
@@ -78,6 +113,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve a Data from its ID
+     *
      * @param dataId ID of the Data
      * @return The Data object
      */
@@ -88,6 +124,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve all Data
+     *
      * @return A DataResponseDTO object List
      */
     @GetMapping(path = "/dataList")
@@ -97,6 +134,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve all Data from the DataSubjectCategory ID
+     *
      * @param dataSubjectCategory ID of the DataSubjectCategory
      * @return A DataResponseDTO object List
      */
@@ -107,6 +145,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve all Data from the DataType name
+     *
      * @param dataTypeName Name of the DataType
      * @return A DataResponseDTO object List
      */
@@ -117,6 +156,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve all personal Data obout a user by its idRef
+     *
      * @param idRef Reference ID of the user
      * @return A ProcessedPersonalDataDTO object List
      */
@@ -127,6 +167,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve processing purposes information about a user by its idRef
+     *
      * @param idRef Reference ID of the user
      * @return A ProcessingPersonalDataDTO object List
      */
@@ -137,6 +178,7 @@ public class DataRestAPI {
 
     /**
      * Retrieve the indirect and produced personal data abour a user by its idRef
+     *
      * @param idRef Reference ID of the user
      * @return A ProcessedIndirectAndProducedPersonalDataDTO object List
      */
@@ -148,6 +190,7 @@ public class DataRestAPI {
     /**
      * Retrieve the list of secondary actors for whom the processed data is transferred,
      * and the list of processed data transferred to them.
+     *
      * @param idRef the ID of the user
      * @return the list of secondary actors
      **/
