@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 
 import priam.data.priamdataservice.repositories.DataRepository;
-import priam.data.priamdataservice.services.DataService;
 
 @SpringBootApplication
 @Configuration

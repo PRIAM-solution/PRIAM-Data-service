@@ -1,17 +1,21 @@
 package priam.data.priamdataservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import priam.data.priamdataservice.entities.Data;
-import priam.data.priamdataservice.entities.DataType;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface DataRepository extends JpaRepository<Data, Integer> {
-    int getIdByAttribute(String attribute);
-    Data findByAttribute(String attribute);
+    Optional<Data> findByDataId(int dataId);
 
-    List<Data> findAllByDscId(int dSCategory);
+    int getIdByDataName(String dataName);
+
+    Data findByDataName(String dataName);
+
+    List<Data> findAllByDataSubjectCategoryId(int dataSubjectCategoryId);
+
     List<Data> findAllByIsPersonal(boolean isPersonal);
-    DataType findDataTypeById(int id);
+
+//    DataType findDataTypeByDataId(int dataId);
 }

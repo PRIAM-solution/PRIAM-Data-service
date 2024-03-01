@@ -5,7 +5,8 @@ import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.entities.Processing;
 import priam.data.priamdataservice.mappers.ProcessingMapper;
-import priam.data.priamdataservice.openfeign.DataSubjectRestClient;
+import priam.data.priamdataservice.openfeign.ActorRestClient;
+import priam.data.priamdataservice.repositories.DataUsageRepository;
 import priam.data.priamdataservice.repositories.ProcessingRepository;
 
 import javax.annotation.Generated;
@@ -20,52 +21,58 @@ import java.util.*;
 @Service
 public class ProcessingService implements ProcessingServiceInterface  {
 
-
     private ProcessingMapper processingMapper;
     private DataUsageService dataUsageService;
-    private DataServiceImpl dataService;
+    private DataService dataService;
     private ProcessingRepository processingRepository;
-    private DataSubjectRestClient dataSubjectRestClient;
+    private DataUsageRepository dataUsageRepository;
+    private ActorRestClient actorRestClient;
 
-    public ProcessingService(ProcessingMapper processingMapper, ProcessingRepository processingRepository, DataUsageService dataUsageService, DataServiceImpl dataService, DataSubjectRestClient dataSubjectRestClient) {
+    public ProcessingService(ProcessingMapper processingMapper, DataUsageService dataUsageService, DataService dataService, ProcessingRepository processingRepository, DataUsageRepository dataUsageRepository, ActorRestClient actorRestClient) {
         this.processingMapper = processingMapper;
-        this.processingRepository = processingRepository;
         this.dataUsageService = dataUsageService;
         this.dataService = dataService;
-        this.dataSubjectRestClient = dataSubjectRestClient;
+        this.processingRepository = processingRepository;
+        this.dataUsageRepository = dataUsageRepository;
+        this.actorRestClient = actorRestClient;
     }
+
     @Override
     public Processing createProcessing(ProcessingRequestDTO processingRequestDTO) {
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
         Processing res = processingRepository.save(processing);
+        res.getDataUsages().forEach(dataUsage -> {
+            dataUsage.setProcessing(res);
+            dataUsageRepository.save(dataUsage);
+        });
         return res;
     }
 
     @Override
-    public ProcessingResponseDTO updateProcessing(Long id,ProcessingRequestDTO processingRequestDTO) {
+    public ProcessingResponseDTO updateProcessing(Integer processingId, ProcessingRequestDTO processingRequestDTO) {
         //log.info("UpdateProcessing start Process !");
         Processing processing = processingMapper.fromProcessingDTO(processingRequestDTO);
-        Processing oldProcessing = processingRepository.findById(id).get();
-        oldProcessing.setCategory(processing.getCategory());
-        oldProcessing.setCreationDate(processing.getCreationDate());
+        Processing oldProcessing = processingRepository.findById(processingId).get();
+        oldProcessing.setProcessingCategory(processing.getProcessingCategory());
+        oldProcessing.setCreatedAt(processing.getCreatedAt());
         oldProcessing.setDataUsages(processing.getDataUsages());
-        oldProcessing.setMesures(processing.getMesures());
-        oldProcessing.setName(processing.getName());
+        oldProcessing.setMeasures(processing.getMeasures());
+        oldProcessing.setProcessingName(processing.getProcessingName());
         oldProcessing.setPurposes(processing.getPurposes());
-        oldProcessing.setType(processing.getType());
-        oldProcessing.setUpdatingDate(new Date());
+        oldProcessing.setProcessingType(processing.getProcessingType());
+        oldProcessing.setModifiedAt(new Date());
         processingRepository.save(oldProcessing);
         return processingMapper.fromProcessing(oldProcessing);
     }
 
     @Override
-    public boolean deleteProcessing(Long processingId) {
+    public boolean deleteProcessing(Integer processingId) {
         processingRepository.deleteById(processingId);
         return true;
     }
 
     @Override
-    public ProcessingResponseDTO getProcessing(Long processingId) {
+    public ProcessingResponseDTO getProcessing(Integer processingId) {
         Processing processing = processingRepository.findById(processingId).get();
         //processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processingId));
         return processingMapper.fromProcessing(processing);
@@ -75,27 +82,26 @@ public class ProcessingService implements ProcessingServiceInterface  {
     public Collection<Processing> getProcessings() {
         Collection<Processing> processings = processingRepository.findAll();
         for (Processing processing: processings){
-            processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processing.getId()));
+            processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processing.getProcessingId()));
         }
         return processings;
         //return processingRepository.findAll();
     }
 
     @Override
-    public Collection<ProcessingResponseDTO> getProcessingsByDsc(int dscId) {
+    public Collection<ProcessingResponseDTO> getProcessingsByDataSubjectCategoryId(int dataSubjectCategoryId) {
         Collection<Processing> processings = getProcessings();
         List<Integer> personalDataId = new LinkedList<>();
         Collection<ProcessingResponseDTO> processingsDsc = new LinkedList<>();
 
-        for (DataResponseDTO data: dataService.findAllDataByDataSubjectCategory(dscId)) {
-            personalDataId.add(data.getId());
+        ArrayList<DataResponseDTO> dataList = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubjectCategoryId));
+        for (DataResponseDTO data: dataList) {
+            personalDataId.add(data.getDataId());
         }
 
         for (Processing processing: processings) {
             int cpt = 0;
             for (DataUsage dataUsage: processing.getDataUsages()) {
-                System.out.println("donnée personnelles "+ personalDataId );
-                System.out.println("donnée personnelles du processing "+ dataUsage.getDataId() );
                 if (personalDataId.contains(dataUsage.getDataId())) {
                     cpt ++;
                     break;
@@ -105,34 +111,31 @@ public class ProcessingService implements ProcessingServiceInterface  {
             if(cpt != 0)
                 processingsDsc.add(processingMapper.fromProcessing(processing));
         }
-
         return processingsDsc;
     }
     @Override
-    public List<ProcessedPersonalDataDTO> getProcessedPersonalDataListByIdRef(String idRef) {
+    public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef) {
         // Retrieve the DataSubject to have its category
-        DataSubjectResponseDTO dataSubject = dataSubjectRestClient.getDataSubjectByRef(idRef);
-        // Retrieve associated processings and datas
-        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDsc(dataSubject.getDscId());
-        ArrayList<DataResponseDTO> datas = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubject.getDscId()));
+        DataSubjectResponseDTO dataSubject = actorRestClient.getDataSubjectByRef(idRef);
 
-        // Construct response
-        ArrayList<ProcessedPersonalDataDTO> response = new ArrayList<>();
+        // Retrieve associated processings and datas
+        Collection<ProcessingResponseDTO> processings = this.getProcessingsByDataSubjectCategoryId(dataSubject.getDataSubjectCategoryId());
+
+        ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
         for (ProcessingResponseDTO processing: processings) {
-            ProcessedPersonalDataDTO p = new ProcessedPersonalDataDTO();
-            p.setProcessingName(processing.getName());
+            ProcessingPersonalDataDTO p = new ProcessingPersonalDataDTO();
+            p.setProcessingName(processing.getProcessingName());
             // Purposes
             processing.getPurposes().forEach(purpose -> {
-                p.addPurposeDescription(purpose.getDescription());
+                p.addPurposeDescription(purpose.getPurposeDescription());
             });
             // Datas
             processing.getDataUsages().forEach(dataUsage -> {
-                p.addDataAttribute(dataService.getAttributeById(dataUsage.getDataId()));
+                p.addDataName(dataService.getDataNameById(dataUsage.getDataId()));
             });
 
             response.add(p);
         }
-
         return response;
     }
 

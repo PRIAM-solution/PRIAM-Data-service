@@ -2,31 +2,33 @@ package priam.data.priamdataservice.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import priam.data.priamdataservice.enums.ProcessingCategory;
 import priam.data.priamdataservice.enums.ProcessingType;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "gdpr_Processing")
-@lombok.Data
+@Table(name = "processing")
+@lombok.Data @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Processing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int processingId;
 
-    private String name;
+    private String processingName;
 
-    private ProcessingType type;
+    private ProcessingType processingType;
 
-    private ProcessingCategory category;
+    private ProcessingCategory processingCategory;
 
    /* private int dataId;
     @Transient
@@ -35,33 +37,35 @@ public class Processing {
     @Column(nullable = true,updatable = false)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private Date createdAt;
 
     @Column(nullable = true)
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatingDate;
+    private Date modifiedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processing",fetch = FetchType.EAGER)
-    private List<DataUsage> dataUsages;
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processing",fetch = FetchType.LAZY)
+    private List<DataUsage> dataUsages = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Purpose> purposes;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Purpose> purposes = new ArrayList<>();
 
-    public Processing(String name, ProcessingType type, ProcessingCategory category, Date creationDate,
-                      Date updatingDate, List<DataUsage> dataUsages, List<Purpose> purposes, List<Mesure> mesures) {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "Processing_Measure", joinColumns = @JoinColumn(name = "processingId", referencedColumnName = "processingId"), inverseJoinColumns = @JoinColumn(name = "measureId", referencedColumnName = "measureId"))
+    private List<Measure> measures = new ArrayList<>();
+
+    public Processing(String processingName, ProcessingType processingType, ProcessingCategory processingCategory, Date createdAt,
+                      Date modifiedAt, List<DataUsage> dataUsages, List<Purpose> purposes, List<Measure> measures) {
         super();
-        this.name = name;
-        this.type = type;
-        this.category = category;
-        this.creationDate = creationDate;
-        this.updatingDate = updatingDate;
+        this.processingName = processingName;
+        this.processingType = processingType;
+        this.processingCategory = processingCategory;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
         this.dataUsages = dataUsages;
         this.purposes = purposes;
-        this.mesures = mesures;
-    }
+        this.measures = measures;
+    } //TODO: to be removed
 
-    @ManyToMany
-    @JoinTable(name = "gdpr_ProcessingMesure", joinColumns = @JoinColumn(name = "processingID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "mesureID", referencedColumnName = "mesureID"))
-    private List<Mesure> mesures;
 }

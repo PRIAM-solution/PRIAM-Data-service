@@ -9,7 +9,7 @@ import priam.data.priamdataservice.entities.Processing;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DataUsageRequestDTO {
-    private Long id;
+    private int dataUsageId;
 
     private boolean personalStatus;
 

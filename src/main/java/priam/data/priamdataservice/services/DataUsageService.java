@@ -49,25 +49,25 @@ public class DataUsageService implements DataUsageServiceInterface {
     }
 
     @Override
-    public boolean deleteDataUsage(Long dataUsageId) {
+    public boolean deleteDataUsage(Integer dataUsageId) {
         dataUsageRepository.deleteById(dataUsageId);
         return true;
     }
 
     @Override
-    public DataUsageResponseDTO getDataUsage(Long dataUsageId) {
+    public DataUsageResponseDTO getDataUsage(Integer dataUsageId) {
         DataUsage dataUsage = dataUsageRepository.findById(dataUsageId).get();
-        Data data = dataRepository.findById(dataUsage.getDataId()).get();
+        Data data = dataRepository.findByDataId(dataUsage.getDataId()).get();
         dataUsage.setData(data);
         return dataUsageMapper.fromDataUsage(dataUsage);/*.orElseThrow();*/
     }
 
     @Override
-    public Collection<DataUsage> getDataUsages(Long processingId) {
+    public Collection<DataUsage> getDataUsages(int processingId) {
         //Collection<DataUsage> datausages = dataUsageRepository.findAll();
-        Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessingId(processingId);
+        Collection<DataUsage> datausages = dataUsageRepository.findAllByProcessing_ProcessingId(processingId);
         for (DataUsage d: datausages){
-            Data data = dataRepository.findById(d.getDataId()).get();
+            Data data = dataRepository.findByDataId(d.getDataId()).get();
             d.setData(data);
         }
         return datausages;

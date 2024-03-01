@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @lombok.Data
 public class DataSubjectResponseDTO {
-    private int id;
+    private int dataSubjectId;
     private int age;
     private String idRef;
     private String username;
     private String password;
-    private int dscId;
-    private String dscName;
+    private int dataSubjectCategoryId;
+    private String dataSubjectCategoryName;
 }

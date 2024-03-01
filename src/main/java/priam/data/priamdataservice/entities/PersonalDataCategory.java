@@ -3,19 +3,17 @@ package priam.data.priamdataservice.entities;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @lombok.Data
-@Table(name = "PersonalDataCategory")
+@Table(name = "personal_data_category")
 public class PersonalDataCategory {
     @Id
-    private int pdCategoryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int personalDataCategoryId;
     @Column
-    private String pdCategoryName;
+    private String personalDataCategoryName;
 }

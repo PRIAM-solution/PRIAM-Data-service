@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataSubjectCategory {
-    private int dsCategoryID;
-    private String dsCategoryName;
-    private String locationID;
+    private int dataSubjectCategoryId;
+    private String dataSubjectCategoryName;
+    private String locationId;
 }
