@@ -157,7 +157,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // First, get all direct datas
-        ArrayList<Data> directDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.DIRECT)).toList());
+        ArrayList<Data> directDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.DIRECT)).collect(Collectors.toList()));
 
         directDatas.forEach(data -> {
             // Construct each dataType
@@ -187,7 +187,7 @@ public class DataService implements DataServiceInterface {
         });
 
         // Then the same thing, with the accepted undirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).collect(Collectors.toList()));
         nondirectDatas.forEach(data -> {
             // We have to verify if provider accepted to give this data
             boolean isAccepted = rightRestClient.getIfDataAccessAccepted(dataSubjectId, data.getDataId());
@@ -230,7 +230,7 @@ public class DataService implements DataServiceInterface {
         ArrayList<Data> dataList = new ArrayList<>(this.findAllProcessedDataByDataSubjectCategoryAndId(dSCategory, dataSubjectId));
 
         // Get indirect and produced datas
-        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).toList());
+        ArrayList<Data> nondirectDatas = new ArrayList<>(dataList.stream().filter(d -> d.getSource().equals(Source.INDIRECT) || d.getSource().equals(Source.PRODUCED)).collect(Collectors.toList()));
 
         nondirectDatas.forEach(data -> {
             // Construct each dataType
