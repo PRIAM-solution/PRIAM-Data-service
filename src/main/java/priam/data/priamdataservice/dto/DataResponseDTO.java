@@ -12,7 +12,7 @@ import priam.data.priamdataservice.enums.Source;
 @Data @AllArgsConstructor
 @NoArgsConstructor
 public class DataResponseDTO {
-    private int dataId;
+    public int dataId;
     private String dataName;
     private boolean isPersonal;
     private Category category;

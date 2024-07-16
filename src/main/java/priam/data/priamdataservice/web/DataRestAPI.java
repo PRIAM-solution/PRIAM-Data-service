@@ -125,23 +125,14 @@ public class DataRestAPI {
 
 package priam.data.priamdataservice.web;
 
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
-import org.keycloak.adapters.jetty.core.AbstractKeycloakJettyAuthenticator;
-import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
-import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.keycloak.representations.AccessToken;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.dto.transfer.DataListTransferDTO;
 import priam.data.priamdataservice.services.DataServiceInterface;
 import priam.data.priamdataservice.services.DataTypeServiceInterface;
 import priam.data.priamdataservice.services.ProcessingServiceInterface;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 

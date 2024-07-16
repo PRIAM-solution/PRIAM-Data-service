@@ -10,7 +10,7 @@ import priam.data.priamdataservice.dto.consent.ConsentResponseDTO;
 import priam.data.priamdataservice.services.ConsentServiceInterface;
 
 @RestController
-@RequestMapping("processing/consent")
+@RequestMapping("/api/processing/consent")
 @AllArgsConstructor
 public class ConsentAPI {
     private final ConsentServiceInterface consentServiceInterface;

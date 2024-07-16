@@ -1,6 +1,7 @@
 package priam.data.priamdataservice.services;
 
 import org.springframework.stereotype.Service;
+
 import priam.data.priamdataservice.dto.*;
 import priam.data.priamdataservice.entities.DataUsage;
 import priam.data.priamdataservice.entities.Processing;
@@ -11,7 +12,10 @@ import priam.data.priamdataservice.repositories.ProcessingRepository;
 
 import javax.annotation.Generated;
 import javax.transaction.Transactional;
+
 import java.util.*;
+
+import priam.data.priamdataservice.entities.Data;
 
 @Generated(
         value = "org.mapstruct.ap.MappingProcessor",
@@ -19,13 +23,14 @@ import java.util.*;
 )
 @Transactional
 @Service
-public class ProcessingService implements ProcessingServiceInterface  {
+public class ProcessingService implements ProcessingServiceInterface {
 
     private ProcessingMapper processingMapper;
     private DataUsageService dataUsageService;
     private DataService dataService;
     private ProcessingRepository processingRepository;
     private DataUsageRepository dataUsageRepository;
+
     private ActorRestClient actorRestClient;
 
     public ProcessingService(ProcessingMapper processingMapper, DataUsageService dataUsageService, DataService dataService, ProcessingRepository processingRepository, DataUsageRepository dataUsageRepository, ActorRestClient actorRestClient) {
@@ -81,8 +86,8 @@ public class ProcessingService implements ProcessingServiceInterface  {
     @Override
     public Collection<Processing> getProcessings() {
         Collection<Processing> processings = processingRepository.findAll();
-        for (Processing processing: processings){
-            processing.setDataUsages((List<DataUsage>)dataUsageService.getDataUsages(processing.getProcessingId()));
+        for (Processing processing : processings) {
+            processing.setDataUsages((List<DataUsage>) dataUsageService.getDataUsages(processing.getProcessingId()));
         }
         return processings;
         //return processingRepository.findAll();
@@ -95,24 +100,26 @@ public class ProcessingService implements ProcessingServiceInterface  {
         Collection<ProcessingResponseDTO> processingsDsc = new LinkedList<>();
 
         ArrayList<DataResponseDTO> dataList = new ArrayList<>(dataService.findAllDataByDataSubjectCategory(dataSubjectCategoryId));
-        for (DataResponseDTO data: dataList) {
+        for (DataResponseDTO data : dataList) {
             personalDataId.add(data.getDataId());
         }
 
-        for (Processing processing: processings) {
+        for (Processing processing : processings) {
             int cpt = 0;
-            for (DataUsage dataUsage: processing.getDataUsages()) {
+            for (DataUsage dataUsage : processing.getDataUsages()) {
                 if (personalDataId.contains(dataUsage.getDataId())) {
-                    cpt ++;
+                    cpt++;
                     break;
                 }
             }
 
-            if(cpt != 0)
+            if (cpt != 0) {
                 processingsDsc.add(processingMapper.fromProcessing(processing));
+            }
         }
         return processingsDsc;
     }
+
     @Override
     public List<ProcessingPersonalDataDTO> getProcessingPersonalDataListPurposes(String idRef) {
         // Retrieve the DataSubject to have its category
@@ -122,7 +129,7 @@ public class ProcessingService implements ProcessingServiceInterface  {
         Collection<ProcessingResponseDTO> processings = this.getProcessingsByDataSubjectCategoryId(dataSubject.getDataSubjectCategoryId());
 
         ArrayList<ProcessingPersonalDataDTO> response = new ArrayList<>();
-        for (ProcessingResponseDTO processing: processings) {
+        for (ProcessingResponseDTO processing : processings) {
             ProcessingPersonalDataDTO p = new ProcessingPersonalDataDTO();
             p.setProcessingName(processing.getProcessingName());
             // Purposes
@@ -138,5 +145,6 @@ public class ProcessingService implements ProcessingServiceInterface  {
         }
         return response;
     }
+
 
 }

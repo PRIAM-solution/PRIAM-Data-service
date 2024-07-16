@@ -3,6 +3,7 @@ package priam.data.priamdataservice.entities;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import priam.data.priamdataservice.enums.ProcessingCategory;
@@ -28,6 +29,7 @@ public class Processing {
 
     private ProcessingType processingType;
 
+    @Enumerated(EnumType.STRING)
     private ProcessingCategory processingCategory;
 
    /* private int dataId;
