@@ -88,6 +88,8 @@ public class ProcessingService implements ProcessingServiceInterface {
         Collection<Processing> processings = processingRepository.findAll();
         for (Processing processing : processings) {
             processing.setDataUsages((List<DataUsage>) dataUsageService.getDataUsages(processing.getProcessingId()));
+            System.out.println(processing.getProcessingId());
+            System.out.println(processing.getProcessingName());
         }
         return processings;
         //return processingRepository.findAll();
